@@ -1,6 +1,7 @@
 package be.vdab.poverello.boekhouding;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,6 +19,12 @@ public class VerrichtingController {
     @GetMapping("aantal")
     long findAantal() {
         return verrichtingService.findAantal();
+    }
+
+    @GetMapping("{id}")
+    Verrichting findById(@PathVariable long id) {
+        return verrichtingService.findById(id)
+                .orElseThrow(VerrichtingNietGevondenException::new);
     }
 
     @GetMapping

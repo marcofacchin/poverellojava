@@ -12,8 +12,10 @@ import java.util.Date;
 public class Verrichting {
     @Id
     private long id;
+    private int volgnummer;
     private Date datum;
     private BigDecimal bedrag;
+    private Boolean kasticket;
 
     public long getId() {
         return id;
@@ -25,5 +27,13 @@ public class Verrichting {
 
     public BigDecimal getBedrag() {
         return bedrag;
+    }
+
+    public int getVolgnummer() {
+        return volgnummer;
+    }
+
+    public Boolean getKasticket() {
+        return kasticket;
     }
 }
