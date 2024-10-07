@@ -1,5 +1,6 @@
 package be.vdab.poverello.boekhouding;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,5 +27,17 @@ public class VerrichtingService {
 
     Optional<Verrichting> findById(long id) {
         return verrichtingRepository.findById(id);
+    }
+
+    @Transactional
+    long create(NieuweVerrichting nieuweVerrichting) {
+        try {
+            // NOG TE BEPALEN : MAAK verrichting -object op basis van nieuwe verrichting -record
+            var verrichting = new Verrichting();
+            verrichtingRepository.save(verrichting);
+            return verrichting.getId();
+        } catch (DataIntegrityViolationException ex) {
+            throw new VerrichtingBestaatAlException();
+        }
     }
 }

@@ -1,9 +1,7 @@
 package be.vdab.poverello.boekhouding;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,5 +28,10 @@ public class VerrichtingController {
     @GetMapping
     List<Verrichting> findAll() {
         return verrichtingService.findAll();
+    }
+
+    @PostMapping
+    long create(@RequestBody @Valid NieuweVerrichting nieuweVerrichting) {
+        return verrichtingService.create(nieuweVerrichting);
     }
 }
