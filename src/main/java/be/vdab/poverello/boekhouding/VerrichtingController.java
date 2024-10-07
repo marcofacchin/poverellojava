@@ -1,6 +1,7 @@
 package be.vdab.poverello.boekhouding;
 
 import jakarta.validation.Valid;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,5 +34,13 @@ public class VerrichtingController {
     @PostMapping
     long create(@RequestBody @Valid NieuweVerrichting nieuweVerrichting) {
         return verrichtingService.create(nieuweVerrichting);
+    }
+
+    @DeleteMapping("{id}")
+    void delete(@PathVariable long id) {
+        try {
+            verrichtingService.delete(id);
+        } catch (EmptyResultDataAccessException ex) {
+        }
     }
 }

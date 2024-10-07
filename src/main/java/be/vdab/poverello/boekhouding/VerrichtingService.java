@@ -40,4 +40,9 @@ public class VerrichtingService {
             throw new VerrichtingBestaatAlException();
         }
     }
+
+    @Transactional
+    void delete(long id) {
+        verrichtingRepository.deleteById(id);
+    }
 }
