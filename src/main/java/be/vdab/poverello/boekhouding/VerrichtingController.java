@@ -43,4 +43,5 @@ public class VerrichtingController {
         } catch (EmptyResultDataAccessException ex) {
         }
     }
+
 }

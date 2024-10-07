@@ -13,12 +13,16 @@ public class Verrichting {
     private long id;
     private int volgnummer;
     private Date datum;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "omschrijvingId")
+    private Omschrijving omschrijving;
     private BigDecimal bedrag;
     private Boolean kasticket;
 
-    public Verrichting(int volgnummer, Date datum, BigDecimal bedrag, Boolean kasticket) {
+    public Verrichting(int volgnummer, Date datum, Omschrijving omschrijving, BigDecimal bedrag, Boolean kasticket) {
         this.volgnummer = volgnummer;
         this.datum = datum;
+        this.omschrijving = omschrijving;
         this.bedrag = bedrag;
         this.kasticket = kasticket;
     }
@@ -44,5 +48,9 @@ public class Verrichting {
 
     public Boolean getKasticket() {
         return kasticket;
+    }
+
+    public Omschrijving getOmschrijving() {
+        return omschrijving;
     }
 }
