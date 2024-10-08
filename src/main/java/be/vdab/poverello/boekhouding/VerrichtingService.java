@@ -25,6 +25,10 @@ public class VerrichtingService {
         return verrichtingRepository.findAll(Sort.by("datum"));
     }
 
+    List<Verrichting> findAllMetOmschrijvingMetType() {
+        return verrichtingRepository.findAllMetOmschrijvingEnType();
+    }
+
     Optional<Verrichting> findById(long id) {
         return verrichtingRepository.findById(id);
     }

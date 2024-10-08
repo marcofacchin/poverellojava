@@ -16,13 +16,17 @@ public class Verrichting {
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "omschrijvingId")
     private Omschrijving omschrijving;
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "typeId")
+    private VerrichtingsType type;
     private BigDecimal bedrag;
     private Boolean kasticket;
 
-    public Verrichting(int volgnummer, Date datum, Omschrijving omschrijving, BigDecimal bedrag, Boolean kasticket) {
+    public Verrichting(int volgnummer, Date datum, Omschrijving omschrijving, VerrichtingsType type, BigDecimal bedrag, Boolean kasticket) {
         this.volgnummer = volgnummer;
         this.datum = datum;
         this.omschrijving = omschrijving;
+        this.type = type;
         this.bedrag = bedrag;
         this.kasticket = kasticket;
     }
@@ -52,5 +56,9 @@ public class Verrichting {
 
     public Omschrijving getOmschrijving() {
         return omschrijving;
+    }
+
+    public VerrichtingsType getType() {
+        return type;
     }
 }
