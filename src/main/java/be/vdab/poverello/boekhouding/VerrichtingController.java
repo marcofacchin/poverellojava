@@ -23,9 +23,9 @@ public class VerrichtingController {
             this(omschrijving.getId(), omschrijving.getInhoud());
         }
     }
-    private record VerrichtingMetOmschrijvingEnType(long id, int volgnummer, Date datum, BigDecimal bedrag, long omschrijvingId, String omschrijving, long typeId, String type, Boolean kasticket) {
+    private record VerrichtingMetOmschrijvingEnType(long id, int afdelingId, int volgnummer, Date datum, BigDecimal bedrag, long omschrijvingId, String omschrijving, long typeId, String type, Boolean kasticket) {
         VerrichtingMetOmschrijvingEnType(Verrichting verrichting) {
-            this(verrichting.getId(), verrichting.getVolgnummer(), verrichting.getDatum(), verrichting.getBedrag(), verrichting.getOmschrijving().getId(), verrichting.getOmschrijving().getInhoud(), verrichting.getType().getId(), verrichting.getType().getInhoud(), verrichting.getKasticket());
+            this(verrichting.getId(), verrichting.getAfdelingId(), verrichting.getVolgnummer(), verrichting.getDatum(), verrichting.getBedrag(), verrichting.getOmschrijving().getId(), verrichting.getOmschrijving().getInhoud(), verrichting.getType().getId(), verrichting.getType().getInhoud(), verrichting.getKasticket());
         }
     }
     public VerrichtingController(VerrichtingService verrichtingService) {
@@ -47,6 +47,13 @@ public class VerrichtingController {
     @GetMapping
     Stream<VerrichtingMetOmschrijvingEnType> findAll() {
         return verrichtingService.findAllMetOmschrijvingMetType()
+                .stream()
+                .map(verrichting -> new VerrichtingMetOmschrijvingEnType(verrichting));
+    }
+
+    @GetMapping(params = "afdelingId")
+    Stream<VerrichtingMetOmschrijvingEnType> findByAfdelingId(int afdelingId) {
+        return verrichtingService.findByAfdelingId(afdelingId)
                 .stream()
                 .map(verrichting -> new VerrichtingMetOmschrijvingEnType(verrichting));
     }

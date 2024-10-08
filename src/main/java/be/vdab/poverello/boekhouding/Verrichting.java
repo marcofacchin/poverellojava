@@ -11,6 +11,7 @@ public class Verrichting {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    private int afdelingId;
     private int volgnummer;
     private Date datum;
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
@@ -22,7 +23,8 @@ public class Verrichting {
     private BigDecimal bedrag;
     private Boolean kasticket;
 
-    public Verrichting(int volgnummer, Date datum, Omschrijving omschrijving, VerrichtingsType type, BigDecimal bedrag, Boolean kasticket) {
+    public Verrichting(int afdelingId, int volgnummer, Date datum, Omschrijving omschrijving, VerrichtingsType type, BigDecimal bedrag, Boolean kasticket) {
+        this.afdelingId = afdelingId;
         this.volgnummer = volgnummer;
         this.datum = datum;
         this.omschrijving = omschrijving;
@@ -36,6 +38,10 @@ public class Verrichting {
 
     public long getId() {
         return id;
+    }
+
+    public int getAfdelingId() {
+        return afdelingId;
     }
 
     public Date getDatum() {

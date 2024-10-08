@@ -29,6 +29,10 @@ public class VerrichtingService {
         return verrichtingRepository.findAllMetOmschrijvingEnType();
     }
 
+    List<Verrichting> findByAfdelingId(int id) {
+        return verrichtingRepository.findByAfdelingId(id);
+    }
+
     Optional<Verrichting> findById(long id) {
         return verrichtingRepository.findById(id);
     }
