@@ -13,7 +13,7 @@ public class Verrichting {
     private long id;
     private int volgnummer;
     private Date datum;
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "omschrijvingId")
     private Omschrijving omschrijving;
     private BigDecimal bedrag;

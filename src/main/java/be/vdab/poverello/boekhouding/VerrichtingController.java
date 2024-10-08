@@ -4,12 +4,25 @@ import jakarta.validation.Valid;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("verrichtingen")
 public class VerrichtingController {
     private final VerrichtingService verrichtingService;
+
+    private record VerrichtingBeknopt(long id, Date datum, BigDecimal bedrag) {
+        VerrichtingBeknopt(Verrichting verrichting) {
+            this(verrichting.getId(), verrichting.getDatum(), verrichting.getBedrag());
+        }
+    }
+    private record OmschrijvingBeknopt(long id, String inhoud) {
+        OmschrijvingBeknopt(Omschrijving omschrijving) {
+            this(omschrijving.getId(), omschrijving.getInhoud());
+        }
+    }
 
     public VerrichtingController(VerrichtingService verrichtingService) {
         this.verrichtingService = verrichtingService;
@@ -21,14 +34,24 @@ public class VerrichtingController {
     }
 
     @GetMapping("{id}")
-    Verrichting findById(@PathVariable long id) {
+    VerrichtingBeknopt findById(@PathVariable long id) {
         return verrichtingService.findById(id)
+                .map(verrichting -> new VerrichtingBeknopt(verrichting))
                 .orElseThrow(VerrichtingNietGevondenException::new);
     }
 
     @GetMapping
-    List<Verrichting> findAll() {
-        return verrichtingService.findAll();
+    Stream<VerrichtingBeknopt> findAll() {
+        return verrichtingService.findAll()
+                .stream()
+                .map(verrichting -> new VerrichtingBeknopt(verrichting));
+    }
+
+    @GetMapping("{id}/omschrijving")
+    OmschrijvingBeknopt findOmschrijvingVan(@PathVariable long id) {
+        return verrichtingService.findById(id)
+                .map(verrichting -> new OmschrijvingBeknopt(verrichting.getOmschrijving()))
+                .orElseThrow(VerrichtingNietGevondenException::new);
     }
 
     @PostMapping
