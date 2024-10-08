@@ -1,9 +1,8 @@
 package be.vdab.poverello.boekhouding;
 
 import jakarta.persistence.*;
-
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "kleinekassa")
@@ -13,7 +12,7 @@ public class Verrichting {
     private long id;
     private int afdelingId;
     private int volgnummer;
-    private Date datum;
+    private LocalDate datum;
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "omschrijvingId")
     private Omschrijving omschrijving;
@@ -23,7 +22,7 @@ public class Verrichting {
     private BigDecimal bedrag;
     private Boolean kasticket;
 
-    public Verrichting(int afdelingId, int volgnummer, Date datum, Omschrijving omschrijving, VerrichtingsType type, BigDecimal bedrag, Boolean kasticket) {
+    public Verrichting(int afdelingId, int volgnummer, LocalDate datum, Omschrijving omschrijving, VerrichtingsType type, BigDecimal bedrag, Boolean kasticket) {
         this.afdelingId = afdelingId;
         this.volgnummer = volgnummer;
         this.datum = datum;
@@ -44,7 +43,7 @@ public class Verrichting {
         return afdelingId;
     }
 
-    public Date getDatum() {
+    public LocalDate getDatum() {
         return datum;
     }
 

@@ -3,9 +3,8 @@ package be.vdab.poverello.boekhouding;
 import jakarta.validation.Valid;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.web.bind.annotation.*;
-
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.stream.Stream;
 
 @RestController
@@ -13,7 +12,7 @@ import java.util.stream.Stream;
 public class VerrichtingController {
     private final VerrichtingService verrichtingService;
 
-    private record VerrichtingBeknopt(long id, Date datum, BigDecimal bedrag) {
+    private record VerrichtingBeknopt(long id, LocalDate datum, BigDecimal bedrag) {
         VerrichtingBeknopt(Verrichting verrichting) {
             this(verrichting.getId(), verrichting.getDatum(), verrichting.getBedrag());
         }
@@ -23,7 +22,7 @@ public class VerrichtingController {
             this(omschrijving.getId(), omschrijving.getInhoud());
         }
     }
-    private record VerrichtingMetOmschrijvingEnType(long id, int afdelingId, int volgnummer, Date datum, BigDecimal bedrag, long omschrijvingId, String omschrijving, long typeId, String type, Boolean kasticket) {
+    private record VerrichtingMetOmschrijvingEnType(long id, int afdelingId, int volgnummer, LocalDate datum, BigDecimal bedrag, long omschrijvingId, String omschrijving, long typeId, String type, Boolean kasticket) {
         VerrichtingMetOmschrijvingEnType(Verrichting verrichting) {
             this(verrichting.getId(), verrichting.getAfdelingId(), verrichting.getVolgnummer(), verrichting.getDatum(), verrichting.getBedrag(), verrichting.getOmschrijving().getId(), verrichting.getOmschrijving().getInhoud(), verrichting.getType().getId(), verrichting.getType().getInhoud(), verrichting.getKasticket());
         }
