@@ -33,6 +33,10 @@ public class VerrichtingService {
         return verrichtingRepository.findByAfdelingId(id);
     }
 
+    List<Verrichting> findByJaar(int year) {
+        return verrichtingRepository.findByJaar(year);
+    }
+
     Optional<Verrichting> findById(long id) {
         return verrichtingRepository.findById(id);
     }

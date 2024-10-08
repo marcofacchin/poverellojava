@@ -58,6 +58,13 @@ public class VerrichtingController {
                 .map(verrichting -> new VerrichtingMetOmschrijvingEnType(verrichting));
     }
 
+    @GetMapping(params = "jaar")
+    Stream<VerrichtingMetOmschrijvingEnType> findByJaar(int jaar) {
+        return verrichtingService.findByJaar(jaar)
+                .stream()
+                .map(verrichting -> new VerrichtingMetOmschrijvingEnType(verrichting));
+    }
+
     @GetMapping("{id}/omschrijving")
     OmschrijvingBeknopt findOmschrijvingVan(@PathVariable long id) {
         return verrichtingService.findById(id)

@@ -12,6 +12,9 @@ public interface VerrichtingRepository extends JpaRepository<Verrichting, Long> 
 
     List<Verrichting> findByAfdelingId(int id);
 
+    @Query("select v from Verrichting v where year(v.datum) = :jaar")
+    List<Verrichting> findByJaar(int jaar);
+
 
 
 }
