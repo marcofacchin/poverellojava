@@ -23,9 +23,9 @@ public class VerrichtingController {
             this(omschrijving.getId(), omschrijving.getInhoud());
         }
     }
-    private record VerrichtingMetOmschrijvingEnType(long id, Date datum, BigDecimal bedrag, long omschrijvingId, String omschrijving, long typeId, String type) {
+    private record VerrichtingMetOmschrijvingEnType(long id, int volgnummer, Date datum, BigDecimal bedrag, long omschrijvingId, String omschrijving, long typeId, String type, Boolean kasticket) {
         VerrichtingMetOmschrijvingEnType(Verrichting verrichting) {
-            this(verrichting.getId(), verrichting.getDatum(), verrichting.getBedrag(), verrichting.getOmschrijving().getId(), verrichting.getOmschrijving().getInhoud(), verrichting.getType().getId(), verrichting.getType().getInhoud());
+            this(verrichting.getId(), verrichting.getVolgnummer(), verrichting.getDatum(), verrichting.getBedrag(), verrichting.getOmschrijving().getId(), verrichting.getOmschrijving().getInhoud(), verrichting.getType().getId(), verrichting.getType().getInhoud(), verrichting.getKasticket());
         }
     }
     public VerrichtingController(VerrichtingService verrichtingService) {
@@ -38,9 +38,9 @@ public class VerrichtingController {
     }
 
     @GetMapping("{id}")
-    VerrichtingMetOmschrijvingEnType findById(@PathVariable long id) {
+    VerrichtingBeknopt findById(@PathVariable long id) {
         return verrichtingService.findById(id)
-                .map(verrichting -> new VerrichtingMetOmschrijvingEnType(verrichting))
+                .map(verrichting -> new VerrichtingBeknopt(verrichting))
                 .orElseThrow(VerrichtingNietGevondenException::new);
     }
 

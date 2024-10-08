@@ -10,4 +10,6 @@ public interface VerrichtingRepository extends JpaRepository<Verrichting, Long> 
     @Query("select v from Verrichting v join fetch v.omschrijving join fetch v.type")
     List<Verrichting> findAllMetOmschrijvingEnType();
 
+
+
 }
