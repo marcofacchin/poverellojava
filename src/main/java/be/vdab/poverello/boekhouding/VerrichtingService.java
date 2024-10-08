@@ -37,6 +37,10 @@ public class VerrichtingService {
         return verrichtingRepository.findByJaar(year);
     }
 
+    List<Verrichting> findByAfdelingIdEnJaarEnMaand(int id, int jaar, int maand) {
+        return verrichtingRepository.findByAfdelingIdEnJaarEnMaand(id, jaar, maand);
+    }
+
     Optional<Verrichting> findById(long id) {
         return verrichtingRepository.findById(id);
     }
