@@ -13,9 +13,6 @@ public class Kasboek {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private long id;
-/*    @ManyToOne(optional = false)
-    @JoinColumn(name = "afdelingId")
-    private Afdeling afdeling;*/
     private long afdelingId;
     private int jaar;
     private int maand;
@@ -37,26 +34,14 @@ public class Kasboek {
     joinColumns = @JoinColumn(name = "kasboekId"))
     @OrderBy("volgnummer")
     private Set<Verrichting> verrichtingen;
+    @Version
+    private long versie;
 
-    public Kasboek(long id, long afdelingId, int jaar, int maand,
-                   int totaalBedragBiljetten,
-                   BigDecimal totaalBedragMunten2E,
-                   BigDecimal totaalBedragMunten1E,
-                   BigDecimal totaalBedragMunten50cE,
-                   BigDecimal totaalBedragMunten20cE,
-                   BigDecimal totaalBedragMunten10cE,
-                   BigDecimal totaalBedragMuntenBruinE) {
-        this.id = id;
+    public Kasboek(long afdelingId, int jaar, int maand
+    ) {
         this.afdelingId = afdelingId;
         this.jaar = jaar;
         this.maand = maand;
-        this.totaalBedragBiljetten = totaalBedragBiljetten;
-        this.totaalBedragMunten2E = totaalBedragMunten2E;
-        this.totaalBedragMunten1E = totaalBedragMunten1E;
-        this.totaalBedragMunten50cE = totaalBedragMunten50cE;
-        this.totaalBedragMunten20cE = totaalBedragMunten20cE;
-        this.totaalBedragMunten10cE = totaalBedragMunten10cE;
-        this.totaalBedragMuntenBruinE = totaalBedragMuntenBruinE;
         verrichtingen = new LinkedHashSet<Verrichting>();
     }
 
@@ -111,4 +96,8 @@ public class Kasboek {
         return Collections.unmodifiableSet(verrichtingen);
     }
 
+    public long getVersie() {
+
+        return versie;
+    }
 }
