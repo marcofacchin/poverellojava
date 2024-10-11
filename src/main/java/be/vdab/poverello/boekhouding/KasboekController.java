@@ -112,4 +112,14 @@ public class KasboekController {
             throw new KasboekWerdGewijzigdException();
         }
     }
+
+    @PatchMapping("{kasboekId}/maand")
+    void wijzigMaand(@PathVariable long kasboekId,
+                    @RequestBody @NotNull @Positive int nieuweMaand) {
+        try {
+            kasboekService.wijzigMaand(kasboekId, nieuweMaand);
+        } catch (ObjectOptimisticLockingFailureException ex) {
+            throw new KasboekWerdGewijzigdException();
+        }
+    }
 }

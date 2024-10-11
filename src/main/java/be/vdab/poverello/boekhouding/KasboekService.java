@@ -58,4 +58,11 @@ public class KasboekService {
                 .orElseThrow(() -> new KasboekNietGevondenException())
                 .setJaar(nieuwJaar);
     }
+
+    @Transactional
+    void wijzigMaand(long kasboekId, int nieuweMaand) {
+        kasboekRepository.findById(kasboekId)
+                .orElseThrow(() -> new KasboekNietGevondenException())
+                .setMaand(nieuweMaand);
+    }
 }
