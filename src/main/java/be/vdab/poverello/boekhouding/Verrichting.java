@@ -15,8 +15,8 @@ public class Verrichting {
     private Boolean kasticket;
     @Enumerated(EnumType.STRING)
     private VerrichtingsType verrichtingsType;
-    @Version
-    private long versie;
+/*    @Version
+    private long versie;*/
 
     public int getVolgnummer() {
         return volgnummer;
@@ -42,9 +42,9 @@ public class Verrichting {
         return verrichtingsType;
     }
 
-    public long getVersie() {
+/*    public long getVersie() {
         return versie;
-    }
+    }*/
 
     @Override
     public boolean equals(Object object) {

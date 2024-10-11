@@ -18,17 +18,17 @@ public class Kasboek {
     private int maand;
     private int totaalBedragBiljetten;
     @Column(name = "totaalBedragMunten2E", precision = 4, scale = 2)
-    private BigDecimal totaalBedragMunten2E;
+    private BigDecimal totaalBedragMunten2E = BigDecimal.ZERO;
     @Column(name = "totaalBedragMunten1E", precision = 4, scale = 2)
-    private BigDecimal totaalBedragMunten1E;
+    private BigDecimal totaalBedragMunten1E = BigDecimal.ZERO;
     @Column(name = "totaalBedragMunten50cE", precision = 4, scale = 2)
-    private BigDecimal totaalBedragMunten50cE;
+    private BigDecimal totaalBedragMunten50cE = BigDecimal.ZERO;
     @Column(name = "totaalBedragMunten20cE", precision = 4, scale = 2)
-    private BigDecimal totaalBedragMunten20cE;
+    private BigDecimal totaalBedragMunten20cE = BigDecimal.ZERO;
     @Column(name = "totaalBedragMunten10cE", precision = 4, scale = 2)
-    private BigDecimal totaalBedragMunten10cE;
+    private BigDecimal totaalBedragMunten10cE = BigDecimal.ZERO;
     @Column(name = "totaalBedragMuntenBruinE", precision = 4, scale = 2)
-    private BigDecimal totaalBedragMuntenBruinE;
+    private BigDecimal totaalBedragMuntenBruinE = BigDecimal.ZERO;
     @ElementCollection
     @CollectionTable(name = "verrichtingen",
     joinColumns = @JoinColumn(name = "kasboekId"))

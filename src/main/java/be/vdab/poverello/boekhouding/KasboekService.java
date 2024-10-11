@@ -1,5 +1,6 @@
 package be.vdab.poverello.boekhouding;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,5 +27,16 @@ public class KasboekService {
         Afdeling afdeling = kasboekRepository.findAfdelingByAfdelingId(afdelingId)
                 .orElseThrow(() -> new KasboekNietGevondenException());
         return kasboekRepository.findKasboekByAfdelingJaarMaandMetDetails(afdelingId, jaar, maand);
+    }
+
+    @Transactional
+    long create(NieuwKasboek nieuwKasboek) {
+        try {
+            var kasboek = new Kasboek(nieuwKasboek.afdelingId(), nieuwKasboek.jaar(), nieuwKasboek.maand());
+            kasboekRepository.save(kasboek);
+            return kasboek.getId();
+        } catch (DataIntegrityViolationException ex) {
+            throw new KasboekBestaatAlExcpetion();
+        }
     }
 }

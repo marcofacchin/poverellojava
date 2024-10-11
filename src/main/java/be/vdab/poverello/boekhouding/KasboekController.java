@@ -1,9 +1,8 @@
 package be.vdab.poverello.boekhouding;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.*;
+
 import java.math.BigDecimal;
 import java.util.stream.Stream;
 
@@ -76,5 +75,9 @@ public class KasboekController {
         return kasboekService.findKasboekByAfdelingIdJaarMaandMetDetails(afdelingId, jaar, maand)
                 .map(kasboek -> new KasboekBeknopt(kasboek))
                 .orElseThrow(() -> new KasboekNietGevondenException());
+    }
+
+    @PostMapping long create(@RequestBody @Valid NieuwKasboek nieuwKasboek) {
+        return kasboekService.create(nieuwKasboek);
     }
 }
