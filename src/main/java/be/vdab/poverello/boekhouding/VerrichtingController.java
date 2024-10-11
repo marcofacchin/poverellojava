@@ -12,7 +12,7 @@ import java.util.stream.Stream;
 public class VerrichtingController {
     private final VerrichtingService verrichtingService;
 
-    private record VerrichtingBeknopt(long id, LocalDate datum, BigDecimal bedrag) {
+    /*private record VerrichtingBeknopt(long id, LocalDate datum, BigDecimal bedrag) {
         VerrichtingBeknopt(Verrichting verrichting) {
             this(verrichting.getId(), verrichting.getDatum(), verrichting.getBedrag());
         }
@@ -26,17 +26,22 @@ public class VerrichtingController {
         VerrichtingMetOmschrijvingEnType(Verrichting verrichting) {
             this(verrichting.getId(), verrichting.getAfdelingId(), verrichting.getVolgnummer(), verrichting.getDatum(), verrichting.getBedrag(), verrichting.getOmschrijving().getId(), verrichting.getOmschrijving().getInhoud(), verrichting.getType().getId(), verrichting.getType().getInhoud(), verrichting.getKasticket());
         }
-    }
+    }*/
+
+
+
     public VerrichtingController(VerrichtingService verrichtingService) {
         this.verrichtingService = verrichtingService;
     }
 
-    @GetMapping("aantal")
+
+
+/*    @GetMapping("aantal")
     long findAantal() {
         return verrichtingService.findAantal();
-    }
+    }*/
 
-    @GetMapping("{id}")
+    /*@GetMapping("{id}")
     VerrichtingBeknopt findById(@PathVariable long id) {
         return verrichtingService.findById(id)
                 .map(verrichting -> new VerrichtingBeknopt(verrichting))
@@ -76,9 +81,9 @@ public class VerrichtingController {
         return verrichtingService.findById(id)
                 .map(verrichting -> new OmschrijvingBeknopt(verrichting.getOmschrijving()))
                 .orElseThrow(VerrichtingNietGevondenException::new);
-    }
+    }*/
 
-    @PostMapping
+   /* @PostMapping
     long create(@RequestBody @Valid NieuweVerrichting nieuweVerrichting) {
         return verrichtingService.create(nieuweVerrichting);
     }
@@ -89,6 +94,6 @@ public class VerrichtingController {
             verrichtingService.delete(id);
         } catch (EmptyResultDataAccessException ex) {
         }
-    }
+    }*/
 
 }

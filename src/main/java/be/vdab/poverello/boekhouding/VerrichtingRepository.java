@@ -3,11 +3,11 @@ package be.vdab.poverello.boekhouding;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import java.util.List;
+import java.util.Optional;
 
-public interface VerrichtingRepository extends JpaRepository<Verrichting, Long> {
+public interface VerrichtingRepository extends JpaRepository<Kasboek, Long> {
 
-    @Query("select v from Verrichting v join fetch v.omschrijving join fetch v.type")
+/*    @Query("select v from Verrichting v join fetch v.omschrijving join fetch v.type")
     List<Verrichting> findAllMetOmschrijvingEnType();
 
     List<Verrichting> findByAfdelingId(int id);
@@ -16,8 +16,6 @@ public interface VerrichtingRepository extends JpaRepository<Verrichting, Long> 
     List<Verrichting> findByJaar(int jaar);
 
     @Query("select v from Verrichting v where v.afdelingId = :id and year(v.datum) = :jaar and month(v.datum) = :maand")
-    List<Verrichting> findByAfdelingIdEnJaarEnMaand(int id, int jaar, int maand);
-
-
+    List<Verrichting> findByAfdelingIdEnJaarEnMaand(int id, int jaar, int maand);*/
 
 }

@@ -9,10 +9,12 @@ import jakarta.persistence.Table;
 public class Omschrijving {
     @Id
     private long id;
+    private long afdelingId;
     private String inhoud;
 
-    public Omschrijving(long id, String inhoud) {
+    public Omschrijving(long id, long afdelingId, String inhoud) {
         this.id = id;
+        this.afdelingId = afdelingId;
         this.inhoud = inhoud;
     }
 
@@ -21,6 +23,10 @@ public class Omschrijving {
 
     public long getId() {
         return id;
+    }
+
+    public long getAfdelingId() {
+        return afdelingId;
     }
 
     public String getInhoud() {

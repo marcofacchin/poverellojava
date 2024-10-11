@@ -1,11 +1,8 @@
 package be.vdab.poverello.boekhouding;
 
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,7 +14,7 @@ public class VerrichtingService {
         this.verrichtingRepository = verrichtingRepository;
     }
 
-    long findAantal() {
+    /*long findAantal() {
         return verrichtingRepository.count();
     }
 
@@ -60,5 +57,6 @@ public class VerrichtingService {
     @Transactional
     void delete(long id) {
         verrichtingRepository.deleteById(id);
-    }
+    }*/
+
 }
