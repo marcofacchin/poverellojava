@@ -122,4 +122,13 @@ public class Kasboek {
     public void verwijderVerrichting(Verrichting verrichting) {
         verrichtingen.remove(verrichting);
     }
+
+    public void wijzigVerrichting(NieuweVerrichting nieuweVerrichting, Omschrijving omschrijving) {
+        var oudeVerrichting = verrichtingen.stream().filter(element -> element.getVolgnummer() == nieuweVerrichting.volgnummer())
+                .findFirst()
+                .orElseThrow(() -> new VerrichtingNietGevondenException());
+        verrichtingen.remove(oudeVerrichting);
+        var verrichting = new Verrichting(nieuweVerrichting.volgnummer(), nieuweVerrichting.dag(), nieuweVerrichting.bedrag(), omschrijving, nieuweVerrichting.kasticket(), nieuweVerrichting.verrichtingsType());
+        verrichtingen.add(verrichting);
+    }
 }

@@ -17,6 +17,22 @@ public class KasboekService {
         this.omschrijvingService = omschrijvingService;
     }
 
+    private Omschrijving maakNieuweOmschrijvingOfGeefBestaande(NieuweVerrichting nieuweVerrichting) {
+        Omschrijving omschrijving = new Omschrijving();
+        if (nieuweVerrichting.omschrijvingId() > 0) {
+            omschrijving = omschrijvingService.findById(nieuweVerrichting.omschrijvingId())
+                    .orElseThrow(() -> new OmschrijvingNietGevondenException());
+        } else {
+            omschrijving = new Omschrijving(nieuweVerrichting.afdelingId(), nieuweVerrichting.omschrijving());
+            try {
+                omschrijvingService.save(omschrijving);
+            } catch (DataIntegrityViolationException ex) {
+                throw new OmschrijvingBestaatAlException();
+            }
+        }
+        return omschrijving;
+    }
+
     long findAantal() {
         return kasboekRepository.count();
     }
@@ -73,18 +89,7 @@ public class KasboekService {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     @Transactional
     void voegVerrichtingToe(long kasboekId, NieuweVerrichting nieuweVerrichting) {
-        Omschrijving omschrijving = new Omschrijving();
-        if (nieuweVerrichting.omschrijvingId() > 0) {
-            omschrijving = omschrijvingService.findById(nieuweVerrichting.omschrijvingId())
-                    .orElseThrow(() -> new OmschrijvingNietGevondenException());
-        } else {
-            omschrijving = new Omschrijving(nieuweVerrichting.afdelingId(), nieuweVerrichting.omschrijving());
-            try {
-                omschrijvingService.save(omschrijving);
-            } catch (DataIntegrityViolationException ex) {
-                throw new OmschrijvingBestaatAlException();
-            }
-        }
+        var omschrijving = maakNieuweOmschrijvingOfGeefBestaande(nieuweVerrichting);
         var verrichting = new Verrichting(nieuweVerrichting.volgnummer(), nieuweVerrichting.dag(), nieuweVerrichting.bedrag(), omschrijving, nieuweVerrichting.kasticket(), nieuweVerrichting.verrichtingsType());
         kasboekRepository.findById(kasboekId)
                 .orElseThrow(() -> new KasboekNietGevondenException())
@@ -100,5 +105,13 @@ public class KasboekService {
                         .findFirst()
                                 .orElse(null);
         kasboek.verwijderVerrichting(verrichting);
+    }
+
+    @Transactional
+    void wijzigVerrichting(long kasboekId, NieuweVerrichting nieuweVerrichting) {
+        var omschrijving = maakNieuweOmschrijvingOfGeefBestaande(nieuweVerrichting);
+        kasboekRepository.findById(kasboekId)
+                .orElseThrow(() -> new KasboekNietGevondenException())
+                .wijzigVerrichting(nieuweVerrichting, omschrijving);
     }
 }

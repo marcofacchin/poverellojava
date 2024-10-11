@@ -136,5 +136,15 @@ public class KasboekController {
         kasboekService.verwijderVerrichting(kasboekId, volgnummer);
     }
 
+    @PatchMapping("{kasboekId}/verrichtingen")
+    void wijzigVerrichting(@PathVariable long kasboekId,
+                           @RequestBody @Valid  NieuweVerrichting nieuweVerrichting) {
+        try {
+            kasboekService.wijzigVerrichting(kasboekId, nieuweVerrichting);
+        } catch (ObjectOptimisticLockingFailureException ex) {
+            throw new KasboekWerdGewijzigdException();
+        }
+    }
+
 
 }
