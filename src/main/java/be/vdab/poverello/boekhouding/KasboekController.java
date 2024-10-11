@@ -1,6 +1,7 @@
 package be.vdab.poverello.boekhouding;
 
 import jakarta.validation.Valid;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -79,5 +80,13 @@ public class KasboekController {
 
     @PostMapping long create(@RequestBody @Valid NieuwKasboek nieuwKasboek) {
         return kasboekService.create(nieuwKasboek);
+    }
+
+    @DeleteMapping("{id}")
+    void delete(@PathVariable long id) {
+        try {
+            kasboekService.delete(id);
+        } catch (EmptyResultDataAccessException ignored) {
+        }
     }
 }

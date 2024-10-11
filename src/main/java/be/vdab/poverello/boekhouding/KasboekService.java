@@ -39,4 +39,9 @@ public class KasboekService {
             throw new KasboekBestaatAlExcpetion();
         }
     }
+
+    @Transactional
+    void delete(long id) {
+        kasboekRepository.deleteById(id);
+    }
 }
