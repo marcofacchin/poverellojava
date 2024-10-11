@@ -102,4 +102,14 @@ public class KasboekController {
             throw new KasboekWerdGewijzigdException();
         }
     }
+
+    @PatchMapping("{kasboekId}/jaar")
+    void wijzigJaar(@PathVariable long kasboekId,
+                          @RequestBody @NotNull @Positive int nieuwJaar) {
+        try {
+            kasboekService.wijzigJaar(kasboekId, nieuwJaar);
+        } catch (ObjectOptimisticLockingFailureException ex) {
+            throw new KasboekWerdGewijzigdException();
+        }
+    }
 }
