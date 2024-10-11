@@ -100,4 +100,16 @@ public class Kasboek {
 
         return versie;
     }
+
+    public void setAfdelingId(long afdelingId) {
+        this.afdelingId = afdelingId;
+    }
+
+    public void setJaar(int jaar) {
+        this.jaar = jaar;
+    }
+
+    public void setMaand(int maand) {
+        this.maand = maand;
+    }
 }

@@ -44,4 +44,11 @@ public class KasboekService {
     void delete(long id) {
         kasboekRepository.deleteById(id);
     }
+
+    @Transactional
+    void wijzigAfdelingId(long kasboekId, long nieuwAfdelingId) {
+        kasboekRepository.findById(kasboekId)
+                .orElseThrow(() -> new KasboekNietGevondenException())
+                .setAfdelingId(nieuwAfdelingId);
+    }
 }

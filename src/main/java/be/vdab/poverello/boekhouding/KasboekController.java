@@ -1,7 +1,10 @@
 package be.vdab.poverello.boekhouding;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -87,6 +90,16 @@ public class KasboekController {
         try {
             kasboekService.delete(id);
         } catch (EmptyResultDataAccessException ignored) {
+        }
+    }
+
+    @PatchMapping("{kasboekId}/afdelingId")
+    void wijzigAfdelingId(@PathVariable long kasboekId,
+                          @RequestBody @NotNull @Positive long nieuwAfdelingId) {
+        try {
+            kasboekService.wijzigAfdelingId(kasboekId, nieuwAfdelingId);
+        } catch (ObjectOptimisticLockingFailureException ex) {
+            throw new KasboekWerdGewijzigdException();
         }
     }
 }
