@@ -10,9 +10,11 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class KasboekService {
     private final KasboekRepository kasboekRepository;
+    private final OmschrijvingService omschrijvingService;
 
-    public KasboekService(KasboekRepository kasboekRepository) {
+    public KasboekService(KasboekRepository kasboekRepository, OmschrijvingService omschrijvingService) {
         this.kasboekRepository = kasboekRepository;
+        this.omschrijvingService = omschrijvingService;
     }
 
     long findAantal() {
@@ -66,21 +68,28 @@ public class KasboekService {
                 .setMaand(nieuweMaand);
     }
 
-/*    @Transactional
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    // kan misschien betere opvang doen van exceptions in onderstaande method (geen exc throwen maar db aanpassen...)
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    @Transactional
     void voegVerrichtingToe(long kasboekId, NieuweVerrichting nieuweVerrichting) {
         Omschrijving omschrijving = new Omschrijving();
         if (nieuweVerrichting.omschrijvingId() > 0) {
-            omschrijving = omschrijvingRepository.findById(nieuweVerrichting.omschrijvingId())
-                    .orElse(//maak nieuwe omschrijving aan);
+            omschrijving = omschrijvingService.findById(nieuweVerrichting.omschrijvingId())
+                    .orElseThrow(() -> new OmschrijvingNietGevondenException());
         } else {
             omschrijving = new Omschrijving(nieuweVerrichting.afdelingId(), nieuweVerrichting.omschrijving());
-            //save omschrijving
+            try {
+                omschrijvingService.save(omschrijving);
+            } catch (DataIntegrityViolationException ex) {
+                throw new OmschrijvingBestaatAlException();
+            }
         }
         var verrichting = new Verrichting(nieuweVerrichting.volgnummer(), nieuweVerrichting.dag(), nieuweVerrichting.bedrag(), omschrijving, nieuweVerrichting.kasticket(), nieuweVerrichting.verrichtingsType());
         kasboekRepository.findById(kasboekId)
                 .orElseThrow(() -> new KasboekNietGevondenException())
                 .voegVerrichtingToe(verrichting);
-    }*/
+    }
 
     @Transactional
     void verwijderVerrichting(long kasboekId, int volgnummer) {

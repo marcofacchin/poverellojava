@@ -14,6 +14,6 @@ public record NieuweVerrichting(
         @Positive long afdelingId,
         @NotBlank String omschrijving,
         Boolean kasticket,
-        @NotBlank VerrichtingsType verrichtingsType
+        VerrichtingsType verrichtingsType
 ) {
 }

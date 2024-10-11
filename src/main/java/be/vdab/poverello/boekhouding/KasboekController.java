@@ -125,14 +125,16 @@ public class KasboekController {
         }
     }
 
-/*    @PostMapping("{kasboekId}/verrichtingen")
+    @PostMapping("{kasboekId}/verrichtingen")
     void voegVerrichtingToe(@PathVariable long kasboekId,
                             @RequestBody @Valid  NieuweVerrichting nieuweVerrichting) {
         kasboekService.voegVerrichtingToe(kasboekId, nieuweVerrichting);
-    }*/
+    }
 
     @DeleteMapping("{kasboekId}/verrichtingen/{volgnummer}")
     void verwijderVerrichting(@PathVariable long kasboekId, @PathVariable int volgnummer) {
         kasboekService.verwijderVerrichting(kasboekId, volgnummer);
     }
+
+
 }
