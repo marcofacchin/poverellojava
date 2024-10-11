@@ -1,6 +1,8 @@
 package be.vdab.poverello.boekhouding;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -121,5 +123,16 @@ public class KasboekController {
         } catch (ObjectOptimisticLockingFailureException ex) {
             throw new KasboekWerdGewijzigdException();
         }
+    }
+
+/*    @PostMapping("{kasboekId}/verrichtingen")
+    void voegVerrichtingToe(@PathVariable long kasboekId,
+                            @RequestBody @Valid  NieuweVerrichting nieuweVerrichting) {
+        kasboekService.voegVerrichtingToe(kasboekId, nieuweVerrichting);
+    }*/
+
+    @DeleteMapping("{kasboekId}/verrichtingen/{volgnummer}")
+    void verwijderVerrichting(@PathVariable long kasboekId, @PathVariable int volgnummer) {
+        kasboekService.verwijderVerrichting(kasboekId, volgnummer);
     }
 }

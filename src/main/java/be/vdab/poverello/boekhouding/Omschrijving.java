@@ -12,8 +12,7 @@ public class Omschrijving {
     private long afdelingId;
     private String inhoud;
 
-    public Omschrijving(long id, long afdelingId, String inhoud) {
-        this.id = id;
+    public Omschrijving(long afdelingId, String inhoud) {
         this.afdelingId = afdelingId;
         this.inhoud = inhoud;
     }

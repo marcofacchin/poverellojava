@@ -112,4 +112,14 @@ public class Kasboek {
     public void setMaand(int maand) {
         this.maand = maand;
     }
+
+    public void voegVerrichtingToe(Verrichting verrichting) {
+        if (! verrichtingen.add(verrichting)) {
+            throw new VerrichtingBestaatAlException();
+        }
+    }
+
+    public void verwijderVerrichting(Verrichting verrichting) {
+        verrichtingen.remove(verrichting);
+    }
 }

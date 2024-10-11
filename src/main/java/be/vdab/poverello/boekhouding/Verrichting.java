@@ -18,6 +18,18 @@ public class Verrichting {
 /*    @Version
     private long versie;*/
 
+    public Verrichting(int volgnummer, int dag, BigDecimal bedrag, Omschrijving omschrijving, Boolean kasticket, VerrichtingsType verrichtingsType) {
+        this.volgnummer = volgnummer;
+        this.dag = dag;
+        this.bedrag = bedrag;
+        this.omschrijving = omschrijving;
+        this.kasticket = kasticket;
+        this.verrichtingsType = verrichtingsType;
+    }
+
+    public Verrichting() {
+    }
+
     public int getVolgnummer() {
         return volgnummer;
     }
