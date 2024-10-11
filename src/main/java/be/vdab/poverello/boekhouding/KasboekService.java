@@ -4,6 +4,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 @Service
@@ -50,7 +51,11 @@ public class KasboekService {
     @Transactional
     long create(NieuwKasboek nieuwKasboek) {
         try {
-            var kasboek = new Kasboek(nieuwKasboek.afdelingId(), nieuwKasboek.jaar(), nieuwKasboek.maand());
+            var kasboek = new Kasboek(nieuwKasboek.afdelingId(), nieuwKasboek.jaar(), nieuwKasboek.maand(), nieuwKasboek.beginSaldo());
+            var nieuweVerrichting = new NieuweVerrichting(0, 1, kasboek.getBeginSaldo(), 1, kasboek.getAfdelingId(), "SALDO", false, VerrichtingsType.N);
+            var omschrijving = maakNieuweOmschrijvingOfGeefBestaande(nieuweVerrichting);
+            var verrichting = new Verrichting(nieuweVerrichting.volgnummer(), nieuweVerrichting.dag(), nieuweVerrichting.bedrag(), omschrijving, nieuweVerrichting.kasticket(), nieuweVerrichting.verrichtingsType());
+            kasboek.voegVerrichtingToe(verrichting);
             kasboekRepository.save(kasboek);
             return kasboek.getId();
         } catch (DataIntegrityViolationException ex) {
@@ -82,6 +87,13 @@ public class KasboekService {
         kasboekRepository.findById(kasboekId)
                 .orElseThrow(() -> new KasboekNietGevondenException())
                 .setMaand(nieuweMaand);
+    }
+
+    @Transactional
+    void wijzigBeginSaldo(long kasboekId, BigDecimal saldo) {
+        kasboekRepository.findById(kasboekId)
+                .orElseThrow(() -> new KasboekNietGevondenException())
+                .setBeginSaldo(saldo);
     }
 
     @Transactional

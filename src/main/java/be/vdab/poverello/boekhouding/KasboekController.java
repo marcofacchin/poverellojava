@@ -40,6 +40,7 @@ public class KasboekController {
             long afdelingId,
             int jaar,
             int maand,
+            BigDecimal beginSaldo,
             Stream<VerrichtingItem> verrichtingen,
             CashMetGewichten cash,
             CashInEuro cashInEuro,
@@ -51,6 +52,7 @@ public class KasboekController {
                     kasboek.getAfdelingId(),
                     kasboek.getJaar(),
                     kasboek.getMaand(),
+                    kasboek.getBeginSaldo(),
                     kasboek.getVerrichtingen()
                             .stream()
                             .map(verrichting -> new VerrichtingItem(verrichting)),
@@ -124,6 +126,16 @@ public class KasboekController {
                     @RequestBody @NotNull @Positive int nieuweMaand) {
         try {
             kasboekService.wijzigMaand(kasboekId, nieuweMaand);
+        } catch (ObjectOptimisticLockingFailureException ex) {
+            throw new KasboekWerdGewijzigdException();
+        }
+    }
+
+    @PatchMapping("{kasboekId}/beginSaldo")
+    void wijzigMaand(@PathVariable long kasboekId,
+                     @RequestBody @NotNull BigDecimal saldo) {
+        try {
+            kasboekService.wijzigBeginSaldo(kasboekId, saldo);
         } catch (ObjectOptimisticLockingFailureException ex) {
             throw new KasboekWerdGewijzigdException();
         }

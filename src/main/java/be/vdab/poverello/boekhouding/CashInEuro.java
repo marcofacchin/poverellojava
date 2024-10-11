@@ -12,6 +12,11 @@ public record CashInEuro(
         @NotNull BigDecimal totaalBedragMunten50cE,
         @NotNull BigDecimal totaalBedragMunten20cE,
         @NotNull BigDecimal totaalBedragMunten10cE,
-        @NotNull BigDecimal totaalBedragMuntenBruinE
+        @NotNull BigDecimal totaalBedragMuntenBruinE,
+        @NotNull BigDecimal totaalBedragMunten,
+        @PositiveOrZero int totaalBedragMuntenAfgerond,
+        @NotNull BigDecimal totaalGewichtMunten,
+        @PositiveOrZero int totaalGewichtMuntenKilo
+
 ) {
 }

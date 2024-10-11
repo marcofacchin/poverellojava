@@ -1,6 +1,8 @@
 package be.vdab.poverello.boekhouding;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Collections;
@@ -31,6 +33,8 @@ public class Kasboek {
     private BigDecimal totaalGewichtMunten10cE = BigDecimal.ZERO;
     @Column(name = "totaalGewichtMuntenBruinE", precision = 4, scale = 2)
     private BigDecimal totaalGewichtMuntenBruinE = BigDecimal.ZERO;
+    @Column(name = "beginSaldo", precision = 4, scale = 2)
+    private BigDecimal beginSaldo = BigDecimal.ZERO;
     @ElementCollection
     @CollectionTable(name = "verrichtingen",
     joinColumns = @JoinColumn(name = "kasboekId"))
@@ -39,11 +43,12 @@ public class Kasboek {
     @Version
     private long versie;
 
-    public Kasboek(long afdelingId, int jaar, int maand
+    public Kasboek(long afdelingId, int jaar, int maand, BigDecimal beginSaldo
     ) {
         this.afdelingId = afdelingId;
         this.jaar = jaar;
         this.maand = maand;
+        this.beginSaldo = beginSaldo;
         verrichtingen = new LinkedHashSet<Verrichting>();
     }
 
@@ -107,15 +112,43 @@ public class Kasboek {
         return new CashMetGewichten(this);
     }
 
+    public BigDecimal getBeginSaldo() {
+        return beginSaldo;
+    }
+
     public CashInEuro getCashInEuro() {
+        BigDecimal totaalBedragMunten2E = totaalGewichtMunten2E.divide(BigDecimal.valueOf(4.32), 2, RoundingMode.HALF_UP);
+        BigDecimal totaalBedragMunten1E = totaalGewichtMunten1E.divide(BigDecimal.valueOf(7.62), 2, RoundingMode.HALF_UP);
+        BigDecimal totaalBedragMunten50cE = totaalGewichtMunten50cE.divide(BigDecimal.valueOf(15.8), 2, RoundingMode.HALF_UP);
+        BigDecimal totaalBedragMunten20cE = totaalGewichtMunten20cE.divide(BigDecimal.valueOf(29), 2, RoundingMode.HALF_UP);
+        BigDecimal totaalBedragMunten10cE = totaalGewichtMunten10cE.divide(BigDecimal.valueOf(42), 2, RoundingMode.HALF_UP);
+        BigDecimal totaalBedragMuntenBruinE = totaalGewichtMuntenBruinE.divide(BigDecimal.valueOf(84), 2, RoundingMode.HALF_UP);
+        BigDecimal totaalBedragMunten = totaalBedragMunten2E
+                .add(totaalBedragMunten1E)
+                .add(totaalBedragMunten50cE)
+                .add(totaalBedragMunten20cE)
+                .add(totaalBedragMunten10cE)
+                .add(totaalBedragMuntenBruinE).setScale(2, RoundingMode.HALF_UP);
+        int totaalBedragMuntenAfgerond = totaalBedragMunten.setScale(0, RoundingMode.HALF_UP).intValue();
+        BigDecimal totaalGewichtMunten = totaalGewichtMunten2E
+                .add(totaalGewichtMunten1E)
+                .add(totaalGewichtMunten50cE)
+                .add(totaalGewichtMunten20cE)
+                .add(totaalGewichtMunten10cE)
+                .add(totaalGewichtMuntenBruinE);
+        int totaalGewichtMuntenInKilo = totaalGewichtMunten.divide(BigDecimal.valueOf(1000), 0, RoundingMode.HALF_UP).intValue();
         return new CashInEuro(
             totaalBedragBiljetten,
-            totaalGewichtMunten2E.divide(BigDecimal.valueOf(4.32), 2, RoundingMode.HALF_UP),
-            totaalGewichtMunten1E.divide(BigDecimal.valueOf(7.62), 2, RoundingMode.HALF_UP),
-            totaalGewichtMunten50cE.divide(BigDecimal.valueOf(15.8), 2, RoundingMode.HALF_UP),
-            totaalGewichtMunten20cE.divide(BigDecimal.valueOf(29), 2, RoundingMode.HALF_UP),
-            totaalGewichtMunten10cE.divide(BigDecimal.valueOf(42), 2, RoundingMode.HALF_UP),
-            totaalGewichtMuntenBruinE.divide(BigDecimal.valueOf(84), 2, RoundingMode.HALF_UP)
+            totaalBedragMunten2E,
+            totaalBedragMunten1E,
+            totaalBedragMunten50cE,
+            totaalBedragMunten20cE,
+            totaalBedragMunten10cE,
+            totaalBedragMuntenBruinE,
+            totaalBedragMunten,
+            totaalBedragMuntenAfgerond,
+            totaalGewichtMunten,
+            totaalGewichtMuntenInKilo
         );
     }
 
@@ -126,8 +159,9 @@ public class Kasboek {
                 .reduce(BigDecimal.ZERO, (vorigeSom, getal) -> vorigeSom.add(getal));
         BigDecimal berekendSaldo = verrichtingen.stream().map(verrichting -> verrichting.getBedrag())
                 .reduce(BigDecimal.ZERO, (vorigeSom, getal) -> vorigeSom.add(getal));
-        BigDecimal verschil = BigDecimal.valueOf(1000.0).subtract(berekendSaldo);
-        return new BerekendeWaarden(totIn, totUit, berekendSaldo, verschil);
+        BigDecimal verschil = beginSaldo.subtract(berekendSaldo);
+        long totaalTicketten = verrichtingen.stream().filter(verrichting -> verrichting.getKasticket() == true).count();
+        return new BerekendeWaarden(totIn, totUit, berekendSaldo, verschil, totaalTicketten);
     }
 
     public void setAfdelingId(long afdelingId) {
@@ -140,6 +174,10 @@ public class Kasboek {
 
     public void setMaand(int maand) {
         this.maand = maand;
+    }
+
+    public void setBeginSaldo(BigDecimal saldo) {
+        this.beginSaldo = saldo;
     }
 
     public void setCash(CashMetGewichten cashMetGewichten) {
