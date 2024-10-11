@@ -42,7 +42,8 @@ public class KasboekController {
             long afdelingId,
             int jaar,
             int maand,
-            Stream<VerrichtingItem> verrichtingen
+            Stream<VerrichtingItem> verrichtingen,
+            CashRecord cash
     ) {
         public KasboekBeknopt(Kasboek kasboek) {
             this(
@@ -52,7 +53,8 @@ public class KasboekController {
                     kasboek.getMaand(),
                     kasboek.getVerrichtingen()
                             .stream()
-                            .map(verrichting -> new VerrichtingItem(verrichting))
+                            .map(verrichting -> new VerrichtingItem(verrichting)),
+                    kasboek.getCash()
             );
         }
     }

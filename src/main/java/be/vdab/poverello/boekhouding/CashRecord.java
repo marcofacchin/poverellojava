@@ -14,4 +14,15 @@ public record CashRecord(
         @NotNull BigDecimal totaalBedragMunten10cE,
         @NotNull BigDecimal totaalBedragMuntenBruinE
 ) {
+    CashRecord(Kasboek kasboek) {
+        this(
+        kasboek.getTotaalBedragBiljetten(),
+        kasboek.getTotaalBedragMunten2E(),
+        kasboek.getTotaalBedragMunten1E(),
+        kasboek.getTotaalBedragMunten50cE(),
+        kasboek.getTotaalBedragMunten20cE(),
+        kasboek.getTotaalBedragMunten10cE(),
+        kasboek.getTotaalBedragMuntenBruinE()
+        );
+    }
 }

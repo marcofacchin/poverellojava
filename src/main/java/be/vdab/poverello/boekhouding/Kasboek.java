@@ -101,6 +101,10 @@ public class Kasboek {
         return versie;
     }
 
+    public CashRecord getCash() {
+        return new CashRecord(this);
+    }
+
     public void setAfdelingId(long afdelingId) {
         this.afdelingId = afdelingId;
     }
