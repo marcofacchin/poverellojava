@@ -84,6 +84,13 @@ public class KasboekService {
                 .setMaand(nieuweMaand);
     }
 
+    @Transactional
+    void wijzigCash(long kasboekId, CashRecord cashRecord) {
+        kasboekRepository.findById(kasboekId)
+                .orElseThrow(() -> new KasboekNietGevondenException())
+                .setCash(cashRecord);
+    }
+
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     // kan misschien betere opvang doen van exceptions in onderstaande method (geen exc throwen maar db aanpassen...)
     ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -114,4 +121,6 @@ public class KasboekService {
                 .orElseThrow(() -> new KasboekNietGevondenException())
                 .wijzigVerrichting(nieuweVerrichting, omschrijving);
     }
+
+
 }

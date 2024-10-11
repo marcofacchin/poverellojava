@@ -125,6 +125,16 @@ public class KasboekController {
         }
     }
 
+    @PatchMapping("{kasboekId}/cash")
+    void wijzigCash(@PathVariable long kasboekId,
+                     @RequestBody @Valid CashRecord cashRecord) {
+        try {
+            kasboekService.wijzigCash(kasboekId, cashRecord);
+        } catch (ObjectOptimisticLockingFailureException ex) {
+            throw new KasboekWerdGewijzigdException();
+        }
+    }
+
     @PostMapping("{kasboekId}/verrichtingen")
     void voegVerrichtingToe(@PathVariable long kasboekId,
                             @RequestBody @Valid  NieuweVerrichting nieuweVerrichting) {

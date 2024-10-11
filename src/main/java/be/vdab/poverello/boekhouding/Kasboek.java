@@ -113,6 +113,16 @@ public class Kasboek {
         this.maand = maand;
     }
 
+    public void setCash(CashRecord cashRecord) {
+        this.totaalBedragBiljetten = cashRecord.totaalBedragBiljetten();
+        this.totaalBedragMunten2E = cashRecord.totaalBedragMunten2E();
+        this.totaalBedragMunten1E = cashRecord.totaalBedragMunten1E();
+        this.totaalBedragMunten50cE = cashRecord.totaalBedragMunten50cE();
+        this.totaalBedragMunten20cE = cashRecord.totaalBedragMunten20cE();
+        this.totaalBedragMunten10cE = cashRecord.totaalBedragMunten10cE();
+        this.totaalBedragMuntenBruinE = cashRecord.totaalBedragMuntenBruinE();
+    }
+
     public void voegVerrichtingToe(Verrichting verrichting) {
         if (! verrichtingen.add(verrichting)) {
             throw new VerrichtingBestaatAlException();
