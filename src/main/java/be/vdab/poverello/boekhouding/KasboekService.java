@@ -25,6 +25,6 @@ public class KasboekService {
     Optional<Kasboek> findKasboekByAfdelingIdJaarMaandMetDetails(long afdelingId, int jaar, int maand) {
         Afdeling afdeling = kasboekRepository.findAfdelingByAfdelingId(afdelingId)
                 .orElseThrow(() -> new KasboekNietGevondenException());
-        return kasboekRepository.findKasboekByAfdelingJaarMaandMetDetails(afdeling, jaar, maand);
+        return kasboekRepository.findKasboekByAfdelingJaarMaandMetDetails(afdelingId, jaar, maand);
     }
 }

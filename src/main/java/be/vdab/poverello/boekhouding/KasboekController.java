@@ -34,7 +34,7 @@ public class KasboekController {
     }
     private record KasboekBeknopt(
             long id,
-            String afdeling,
+            long afdelingId,
             int jaar,
             int maand,
             Stream<VerrichtingItem> verrichtingen
@@ -42,7 +42,7 @@ public class KasboekController {
         public KasboekBeknopt(Kasboek kasboek) {
             this(
                     kasboek.getId(),
-                    kasboek.getAfdeling().getNaam(),
+                    kasboek.getAfdelingId(),
                     kasboek.getJaar(),
                     kasboek.getMaand(),
                     kasboek.getVerrichtingen()

@@ -13,9 +13,10 @@ public class Kasboek {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private long id;
-    @ManyToOne(optional = false)
+/*    @ManyToOne(optional = false)
     @JoinColumn(name = "afdelingId")
-    private Afdeling afdeling;
+    private Afdeling afdeling;*/
+    private long afdelingId;
     private int jaar;
     private int maand;
     private int totaalBedragBiljetten;
@@ -37,7 +38,7 @@ public class Kasboek {
     @OrderBy("volgnummer")
     private Set<Verrichting> verrichtingen;
 
-    public Kasboek(long id, Afdeling afdeling, int jaar, int maand,
+    public Kasboek(long id, long afdelingId, int jaar, int maand,
                    int totaalBedragBiljetten,
                    BigDecimal totaalBedragMunten2E,
                    BigDecimal totaalBedragMunten1E,
@@ -46,7 +47,7 @@ public class Kasboek {
                    BigDecimal totaalBedragMunten10cE,
                    BigDecimal totaalBedragMuntenBruinE) {
         this.id = id;
-        this.afdeling = afdeling;
+        this.afdelingId = afdelingId;
         this.jaar = jaar;
         this.maand = maand;
         this.totaalBedragBiljetten = totaalBedragBiljetten;
@@ -66,8 +67,8 @@ public class Kasboek {
         return id;
     }
 
-    public Afdeling getAfdeling() {
-        return afdeling;
+    public long getAfdelingId() {
+        return afdelingId;
     }
 
     public int getJaar() {
