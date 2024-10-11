@@ -2,9 +2,11 @@ package be.vdab.poverello.boekhouding;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
+
 
 @Entity
 @Table(name = "kasboeken")
@@ -17,18 +19,18 @@ public class Kasboek {
     private int jaar;
     private int maand;
     private int totaalBedragBiljetten;
-    @Column(name = "totaalBedragMunten2E", precision = 4, scale = 2)
-    private BigDecimal totaalBedragMunten2E = BigDecimal.ZERO;
-    @Column(name = "totaalBedragMunten1E", precision = 4, scale = 2)
-    private BigDecimal totaalBedragMunten1E = BigDecimal.ZERO;
-    @Column(name = "totaalBedragMunten50cE", precision = 4, scale = 2)
-    private BigDecimal totaalBedragMunten50cE = BigDecimal.ZERO;
-    @Column(name = "totaalBedragMunten20cE", precision = 4, scale = 2)
-    private BigDecimal totaalBedragMunten20cE = BigDecimal.ZERO;
-    @Column(name = "totaalBedragMunten10cE", precision = 4, scale = 2)
-    private BigDecimal totaalBedragMunten10cE = BigDecimal.ZERO;
-    @Column(name = "totaalBedragMuntenBruinE", precision = 4, scale = 2)
-    private BigDecimal totaalBedragMuntenBruinE = BigDecimal.ZERO;
+    @Column(name = "totaalGewichtMunten2E", precision = 4, scale = 2)
+    private BigDecimal totaalGewichtMunten2E = BigDecimal.ZERO;
+    @Column(name = "totaalGewichtMunten1E", precision = 4, scale = 2)
+    private BigDecimal totaalGewichtMunten1E = BigDecimal.ZERO;
+    @Column(name = "totaalGewichtMunten50cE", precision = 4, scale = 2)
+    private BigDecimal totaalGewichtMunten50cE = BigDecimal.ZERO;
+    @Column(name = "totaalGewichtMunten20cE", precision = 4, scale = 2)
+    private BigDecimal totaalGewichtMunten20cE = BigDecimal.ZERO;
+    @Column(name = "totaalGewichtMunten10cE", precision = 4, scale = 2)
+    private BigDecimal totaalGewichtMunten10cE = BigDecimal.ZERO;
+    @Column(name = "totaalGewichtMuntenBruinE", precision = 4, scale = 2)
+    private BigDecimal totaalGewichtMuntenBruinE = BigDecimal.ZERO;
     @ElementCollection
     @CollectionTable(name = "verrichtingen",
     joinColumns = @JoinColumn(name = "kasboekId"))
@@ -68,28 +70,28 @@ public class Kasboek {
         return totaalBedragBiljetten;
     }
 
-    public BigDecimal getTotaalBedragMunten2E() {
-        return totaalBedragMunten2E;
+    public BigDecimal getTotaalGewichtMunten2E() {
+        return totaalGewichtMunten2E;
     }
 
-    public BigDecimal getTotaalBedragMunten1E() {
-        return totaalBedragMunten1E;
+    public BigDecimal getTotaalGewichtMunten1E() {
+        return totaalGewichtMunten1E;
     }
 
-    public BigDecimal getTotaalBedragMunten50cE() {
-        return totaalBedragMunten50cE;
+    public BigDecimal getTotaalGewichtMunten50cE() {
+        return totaalGewichtMunten50cE;
     }
 
-    public BigDecimal getTotaalBedragMunten20cE() {
-        return totaalBedragMunten20cE;
+    public BigDecimal getTotaalGewichtMunten20cE() {
+        return totaalGewichtMunten20cE;
     }
 
-    public BigDecimal getTotaalBedragMunten10cE() {
-        return totaalBedragMunten10cE;
+    public BigDecimal getTotaalGewichtMunten10cE() {
+        return totaalGewichtMunten10cE;
     }
 
-    public BigDecimal getTotaalBedragMuntenBruinE() {
-        return totaalBedragMuntenBruinE;
+    public BigDecimal getTotaalGewichtMuntenBruinE() {
+        return totaalGewichtMuntenBruinE;
     }
 
     public Set<Verrichting> getVerrichtingen() {
@@ -101,8 +103,31 @@ public class Kasboek {
         return versie;
     }
 
-    public CashRecord getCash() {
-        return new CashRecord(this);
+    public CashMetGewichten getCash() {
+        return new CashMetGewichten(this);
+    }
+
+    public CashInEuro getCashInEuro() {
+        return new CashInEuro(
+            totaalBedragBiljetten,
+            totaalGewichtMunten2E.divide(BigDecimal.valueOf(4.32), 2, RoundingMode.HALF_UP),
+            totaalGewichtMunten1E.divide(BigDecimal.valueOf(7.62), 2, RoundingMode.HALF_UP),
+            totaalGewichtMunten50cE.divide(BigDecimal.valueOf(15.8), 2, RoundingMode.HALF_UP),
+            totaalGewichtMunten20cE.divide(BigDecimal.valueOf(29), 2, RoundingMode.HALF_UP),
+            totaalGewichtMunten10cE.divide(BigDecimal.valueOf(42), 2, RoundingMode.HALF_UP),
+            totaalGewichtMuntenBruinE.divide(BigDecimal.valueOf(84), 2, RoundingMode.HALF_UP)
+        );
+    }
+
+    public BerekendeWaarden getBerekendeWaarden() {
+        BigDecimal totIn = verrichtingen.stream().map(verrichting -> verrichting.getBedrag()).filter(bedrag -> bedrag.compareTo(BigDecimal.ZERO) > 0)
+                .reduce(BigDecimal.ZERO, (vorigeSom, getal) -> vorigeSom.add(getal));
+        BigDecimal totUit = verrichtingen.stream().map(verrichting -> verrichting.getBedrag()).filter(bedrag -> bedrag.compareTo(BigDecimal.ZERO) < 0)
+                .reduce(BigDecimal.ZERO, (vorigeSom, getal) -> vorigeSom.add(getal));
+        BigDecimal berekendSaldo = verrichtingen.stream().map(verrichting -> verrichting.getBedrag())
+                .reduce(BigDecimal.ZERO, (vorigeSom, getal) -> vorigeSom.add(getal));
+        BigDecimal verschil = BigDecimal.valueOf(1000.0).subtract(berekendSaldo);
+        return new BerekendeWaarden(totIn, totUit, berekendSaldo, verschil);
     }
 
     public void setAfdelingId(long afdelingId) {
@@ -117,14 +142,14 @@ public class Kasboek {
         this.maand = maand;
     }
 
-    public void setCash(CashRecord cashRecord) {
-        this.totaalBedragBiljetten = cashRecord.totaalBedragBiljetten();
-        this.totaalBedragMunten2E = cashRecord.totaalBedragMunten2E();
-        this.totaalBedragMunten1E = cashRecord.totaalBedragMunten1E();
-        this.totaalBedragMunten50cE = cashRecord.totaalBedragMunten50cE();
-        this.totaalBedragMunten20cE = cashRecord.totaalBedragMunten20cE();
-        this.totaalBedragMunten10cE = cashRecord.totaalBedragMunten10cE();
-        this.totaalBedragMuntenBruinE = cashRecord.totaalBedragMuntenBruinE();
+    public void setCash(CashMetGewichten cashMetGewichten) {
+        this.totaalBedragBiljetten = cashMetGewichten.totaalBedragBiljetten();
+        this.totaalGewichtMunten2E = cashMetGewichten.totaalGewichtMunten2E();
+        this.totaalGewichtMunten1E = cashMetGewichten.totaalGewichtMunten1E();
+        this.totaalGewichtMunten50cE = cashMetGewichten.totaalGewichtMunten50cE();
+        this.totaalGewichtMunten20cE = cashMetGewichten.totaalGewichtMunten20cE();
+        this.totaalGewichtMunten10cE = cashMetGewichten.totaalGewichtMunten10cE();
+        this.totaalGewichtMuntenBruinE = cashMetGewichten.totaalGewichtMuntenBruinE();
     }
 
     public void voegVerrichtingToe(Verrichting verrichting) {

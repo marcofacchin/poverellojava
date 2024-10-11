@@ -85,10 +85,10 @@ public class KasboekService {
     }
 
     @Transactional
-    void wijzigCash(long kasboekId, CashRecord cashRecord) {
+    void wijzigCash(long kasboekId, CashMetGewichten cashMetGewichten) {
         kasboekRepository.findById(kasboekId)
                 .orElseThrow(() -> new KasboekNietGevondenException())
-                .setCash(cashRecord);
+                .setCash(cashMetGewichten);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////

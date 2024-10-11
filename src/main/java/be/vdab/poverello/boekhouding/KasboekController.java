@@ -1,8 +1,6 @@
 package be.vdab.poverello.boekhouding;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -43,7 +41,9 @@ public class KasboekController {
             int jaar,
             int maand,
             Stream<VerrichtingItem> verrichtingen,
-            CashRecord cash
+            CashMetGewichten cash,
+            CashInEuro cashInEuro,
+            BerekendeWaarden berekendeWaarden
     ) {
         public KasboekBeknopt(Kasboek kasboek) {
             this(
@@ -54,7 +54,9 @@ public class KasboekController {
                     kasboek.getVerrichtingen()
                             .stream()
                             .map(verrichting -> new VerrichtingItem(verrichting)),
-                    kasboek.getCash()
+                    kasboek.getCash(),
+                    kasboek.getCashInEuro(),
+                    kasboek.getBerekendeWaarden()
             );
         }
     }
@@ -129,9 +131,9 @@ public class KasboekController {
 
     @PatchMapping("{kasboekId}/cash")
     void wijzigCash(@PathVariable long kasboekId,
-                     @RequestBody @Valid CashRecord cashRecord) {
+                     @RequestBody @Valid CashMetGewichten cashMetGewichten) {
         try {
-            kasboekService.wijzigCash(kasboekId, cashRecord);
+            kasboekService.wijzigCash(kasboekId, cashMetGewichten);
         } catch (ObjectOptimisticLockingFailureException ex) {
             throw new KasboekWerdGewijzigdException();
         }
