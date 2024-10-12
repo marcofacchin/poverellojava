@@ -7,5 +7,7 @@ public interface OmschrijvingRepository extends JpaRepository<Omschrijving, Long
 
     List<Omschrijving> findAllByAfdelingIdOrderByInhoud(long afdelingId);
 
+    Boolean existsByAfdelingIdAndInhoud(long afdelingId, String inhoud);
+
 
 }

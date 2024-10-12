@@ -30,4 +30,8 @@ public class OmschrijvingService {
         omschrijvingRepository.save(omschrijving);
         return omschrijving.getId();
     }
+
+    Boolean existsByAfdelingIdAndInhoud(long afdelingId, String inhoud) {
+        return omschrijvingRepository.existsByAfdelingIdAndInhoud(afdelingId, inhoud);
+    }
 }

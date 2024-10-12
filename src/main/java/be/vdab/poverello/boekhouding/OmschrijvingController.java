@@ -1,5 +1,6 @@
 package be.vdab.poverello.boekhouding;
 
+import jakarta.validation.constraints.NotNull;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,6 +34,12 @@ public class OmschrijvingController {
         } catch (EmptyResultDataAccessException ignored) {
             throw new OmschrijvingNietGevondenException();
         }
+    }
+
+    @PostMapping("{afdelingId}/exists")
+    Boolean existsByAfdelingId(@PathVariable long afdelingId,
+                               @RequestBody @NotNull String inhoud) {
+        return omschrijvingService.existsByAfdelingIdAndInhoud(afdelingId, inhoud);
     }
 
 
