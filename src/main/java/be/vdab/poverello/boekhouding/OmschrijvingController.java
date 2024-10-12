@@ -38,7 +38,6 @@ public class OmschrijvingController {
         try {
             omschrijvingService.deleteById(id);
         } catch (EmptyResultDataAccessException ignored) {
-            throw new OmschrijvingNietGevondenException();
         }
     }
 
