@@ -21,7 +21,7 @@ public class KasboekService {
     private Omschrijving maakNieuweOmschrijvingOfGeefBestaande(NieuweVerrichting nieuweVerrichting) {
         Omschrijving omschrijving = new Omschrijving();
         if (nieuweVerrichting.omschrijvingId() > 0) {
-            omschrijving = omschrijvingService.findById(nieuweVerrichting.omschrijvingId())
+            omschrijving = omschrijvingService.findByAfdelingIdAndId(nieuweVerrichting.afdelingId(), nieuweVerrichting.omschrijvingId())
                     .orElseThrow(() -> new OmschrijvingNietGevondenException());
         } else {
             omschrijving = new Omschrijving(nieuweVerrichting.afdelingId(), nieuweVerrichting.omschrijving());
@@ -52,7 +52,7 @@ public class KasboekService {
     long create(NieuwKasboek nieuwKasboek) {
         try {
             var kasboek = new Kasboek(nieuwKasboek.afdelingId(), nieuwKasboek.jaar(), nieuwKasboek.maand(), nieuwKasboek.beginSaldo());
-            var nieuweVerrichting = new NieuweVerrichting(0, 1, kasboek.getBeginSaldo(), 1, kasboek.getAfdelingId(), "SALDO", false, VerrichtingsType.N);
+            var nieuweVerrichting = new NieuweVerrichting(0, 1, kasboek.getBeginSaldo(), 1, 1, "SALDO", false, VerrichtingsType.N);
             var omschrijving = maakNieuweOmschrijvingOfGeefBestaande(nieuweVerrichting);
             var verrichting = new Verrichting(nieuweVerrichting.volgnummer(), nieuweVerrichting.dag(), nieuweVerrichting.bedrag(), omschrijving, nieuweVerrichting.kasticket(), nieuweVerrichting.verrichtingsType());
             kasboek.voegVerrichtingToe(verrichting);

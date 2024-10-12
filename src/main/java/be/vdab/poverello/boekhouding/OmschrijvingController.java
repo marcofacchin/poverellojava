@@ -4,8 +4,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 import java.util.stream.Stream;
 
 @RestController
@@ -25,7 +23,7 @@ public class OmschrijvingController {
 
     @GetMapping("{afdelingId}")
     Stream<OmschrijvingBeknopt> findAllByAfdelingId(@PathVariable long afdelingId) {
-        return omschrijvingService.findAllByAfdelingId(afdelingId)
+        return omschrijvingService.findAllByAfdelingIdOrderByInhoud(afdelingId)
                 .stream().map(omschrijving -> new OmschrijvingBeknopt(omschrijving));
     }
 

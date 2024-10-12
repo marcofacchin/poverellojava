@@ -2,7 +2,6 @@ package be.vdab.poverello.boekhouding;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -15,12 +14,16 @@ public class OmschrijvingService {
         this.omschrijvingRepository = omschrijvingRepository;
     }
 
-    Optional<Omschrijving> findById(long id) {
-        return omschrijvingRepository.findById(id);
+    List<Omschrijving> findAllByAfdelingIdOrderByInhoud(long afdelingId) {
+        return omschrijvingRepository.findAllByAfdelingIdOrderByInhoud(afdelingId);
     }
 
-    List<Omschrijving> findAllByAfdelingId(long afdelingId) {
-        return omschrijvingRepository.findAllByAfdelingIdOrderByInhoud(afdelingId);
+    Optional<Omschrijving> findByAfdelingIdAndId(long afdelingId, long id) {
+        return omschrijvingRepository.findByAfdelingIdAndId(afdelingId, id);
+    }
+
+    void deleteByAfdelingIdAndId(long afdelingId, long id) {
+        omschrijvingRepository.deleteByAfdelingIdAndId(afdelingId, id);
     }
 
     long save(Omschrijving omschrijving) {
