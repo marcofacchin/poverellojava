@@ -103,11 +103,20 @@ public class KasboekService {
                 .setCash(cashMetGewichten);
     }
 
+    private void checkVolgnummerVerrichting(long kasboekId, int volgnummer) {
+        var kasboek = kasboekRepository.findById(kasboekId)
+                .orElseThrow(() -> new KasboekNietGevondenException());
+        var verrichtingen = kasboek.getVerrichtingen();
+        if (verrichtingen.stream().anyMatch(element -> element.getVolgnummer() == volgnummer)) {
+            throw new VerrichtingBestaatAlException();
+        }
+    }
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     // kan misschien betere opvang doen van exceptions in onderstaande method (geen exc throwen maar db aanpassen...)
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     @Transactional
     void voegVerrichtingToe(long kasboekId, NieuweVerrichting nieuweVerrichting) {
+        checkVolgnummerVerrichting(kasboekId, nieuweVerrichting.volgnummer());
         var omschrijving = maakNieuweOmschrijvingOfGeefBestaande(nieuweVerrichting);
         var verrichting = new Verrichting(nieuweVerrichting.volgnummer(), nieuweVerrichting.dag(), nieuweVerrichting.bedrag(), omschrijving, nieuweVerrichting.kasticket(), nieuweVerrichting.verrichtingsType());
         kasboekRepository.findById(kasboekId)

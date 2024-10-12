@@ -30,4 +30,8 @@ public class Omschrijving {
     public String getInhoud() {
         return inhoud;
     }
+
+    public void setAfdelingId(long afdelingId) {
+        this.afdelingId = afdelingId;
+    }
 }

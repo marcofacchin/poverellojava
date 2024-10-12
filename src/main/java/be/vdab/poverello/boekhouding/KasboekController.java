@@ -14,6 +14,7 @@ import java.util.stream.Stream;
 @RequestMapping("kasboeken")
 public class KasboekController {
     private final KasboekService kasboekService;
+    private final OmschrijvingService omschrijvingService;
     private record VerrichtingItem(
             int volgnummer,
             int dag,
@@ -63,8 +64,9 @@ public class KasboekController {
         }
     }
 
-    public KasboekController(KasboekService kasboekService) {
+    public KasboekController(KasboekService kasboekService, OmschrijvingService omschrijvingService) {
         this.kasboekService = kasboekService;
+        this.omschrijvingService = omschrijvingService;
     }
 
     @GetMapping("aantal")
@@ -90,6 +92,9 @@ public class KasboekController {
     }
 
     @PostMapping long create(@RequestBody @Valid NieuwKasboek nieuwKasboek) {
+        if (nieuwKasboek.afdelingId() == 1) {
+            throw new KasboekBestaatAlExcpetion();
+        }
         return kasboekService.create(nieuwKasboek);
     }
 
@@ -101,15 +106,33 @@ public class KasboekController {
         }
     }
 
-    @PatchMapping("{kasboekId}/afdelingId")
+    //het wijzigen van de afdelingId wordt heel ingewikkeld omdat de omschrijvingen nu opgeslaan worden per afdeling
+    //er dienen dus neiuwe omschrijvingen aangemaakt te worden in de omschrijvingen-DBtabel indien deze nog niet bestaan in de nieuwe afdeling
+    //er zou ook moeten gekeken worden of een omschrijving uit de oude afdeling reeds bestaat in de nieuwe...
+    //INDIEN DE AFDELING VAN EEN KASBOEK GEWIJZIGD MOET WORDEN IS DE BESTE OPLOSSING DUS OM EEN VOLLEDIG NIEUW KASBOEK AAN TE MAKEN
+    //EN DE VERRICHTINGEN OPNIEUW IN TE GEVEN IN DE NIEUWE AFDELING
+    /*    @PatchMapping("{kasboekId}/afdelingId")
     void wijzigAfdelingId(@PathVariable long kasboekId,
                           @RequestBody @NotNull @Positive long nieuwAfdelingId) {
         try {
+            //indien er reeds verrichtingen zijn moet het afdelingId van de omschrijvingen ook aangepast worden!:
+            var kasboek = kasboekService.findKasboekByIdMetDetails(kasboekId)
+                    .orElseThrow(() -> new KasboekNietGevondenException());
+            var verrichtingen = kasboek.getVerrichtingen();
+            if (!verrichtingen.isEmpty()) {
+                verrichtingen.stream().forEach(verrichting -> {
+                    var omschrijving = verrichting.getOmschrijving();
+                    if (omschrijving.getAfdelingId() > 1) {
+                        omschrijving.setAfdelingId(nieuwAfdelingId);
+                        omschrijvingService.save(omschrijving);
+                    }
+                });
+            }
             kasboekService.wijzigAfdelingId(kasboekId, nieuwAfdelingId);
         } catch (ObjectOptimisticLockingFailureException ex) {
             throw new KasboekWerdGewijzigdException();
         }
-    }
+    }*/
 
     @PatchMapping("{kasboekId}/jaar")
     void wijzigJaar(@PathVariable long kasboekId,

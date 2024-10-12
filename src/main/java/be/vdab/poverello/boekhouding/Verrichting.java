@@ -54,6 +54,8 @@ public class Verrichting {
         return verrichtingsType;
     }
 
+
+
 /*    public long getVersie() {
         return versie;
     }*/
