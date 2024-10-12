@@ -3,7 +3,6 @@ package be.vdab.poverello.boekhouding;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.math.BigDecimal;
 import java.util.Optional;
 
@@ -18,20 +17,15 @@ public class KasboekService {
         this.omschrijvingService = omschrijvingService;
     }
 
-    private Omschrijving maakNieuweOmschrijvingOfGeefBestaande(NieuweVerrichting nieuweVerrichting) {
-        Omschrijving omschrijving = new Omschrijving();
-        if (nieuweVerrichting.omschrijvingId() > 0) {
-            omschrijving = omschrijvingService.findById(nieuweVerrichting.omschrijvingId())
-                    .orElseThrow(() -> new OmschrijvingNietGevondenException());
-        } else {
-            omschrijving = new Omschrijving(nieuweVerrichting.afdelingId(), nieuweVerrichting.omschrijving());
+    private void maakNieuweOmschrijvingIndienNogNietBestaand(NieuweVerrichting nieuweVerrichting) {
+        if (!omschrijvingService.existsByAfdelingIdAndInhoud(nieuweVerrichting.afdelingId(), nieuweVerrichting.omschrijving())) {
+            Omschrijving omschrijving = new Omschrijving(nieuweVerrichting.afdelingId(), nieuweVerrichting.omschrijving());
             try {
                 omschrijvingService.save(omschrijving);
             } catch (DataIntegrityViolationException ex) {
                 throw new OmschrijvingBestaatAlException();
             }
         }
-        return omschrijving;
     }
 
     long findAantal() {
@@ -52,9 +46,7 @@ public class KasboekService {
     long create(NieuwKasboek nieuwKasboek) {
         try {
             var kasboek = new Kasboek(nieuwKasboek.afdelingId(), nieuwKasboek.jaar(), nieuwKasboek.maand(), nieuwKasboek.beginSaldo());
-            var nieuweVerrichting = new NieuweVerrichting(0, 1, kasboek.getBeginSaldo(), 1, 1, "SALDO", false, VerrichtingsType.N);
-            var omschrijving = maakNieuweOmschrijvingOfGeefBestaande(nieuweVerrichting);
-            var verrichting = new Verrichting(nieuweVerrichting.volgnummer(), nieuweVerrichting.dag(), nieuweVerrichting.bedrag(), omschrijving, nieuweVerrichting.kasticket(), nieuweVerrichting.verrichtingsType());
+            var verrichting = new Verrichting(0, 1, kasboek.getBeginSaldo(), "SALDO", false, VerrichtingsType.N);
             kasboek.voegVerrichtingToe(verrichting);
             kasboekRepository.save(kasboek);
             return kasboek.getId();
@@ -117,8 +109,8 @@ public class KasboekService {
     @Transactional
     void voegVerrichtingToe(long kasboekId, NieuweVerrichting nieuweVerrichting) {
         checkVolgnummerVerrichting(kasboekId, nieuweVerrichting.volgnummer());
-        var omschrijving = maakNieuweOmschrijvingOfGeefBestaande(nieuweVerrichting);
-        var verrichting = new Verrichting(nieuweVerrichting.volgnummer(), nieuweVerrichting.dag(), nieuweVerrichting.bedrag(), omschrijving, nieuweVerrichting.kasticket(), nieuweVerrichting.verrichtingsType());
+        maakNieuweOmschrijvingIndienNogNietBestaand(nieuweVerrichting);
+        var verrichting = new Verrichting(nieuweVerrichting.volgnummer(), nieuweVerrichting.dag(), nieuweVerrichting.bedrag(), nieuweVerrichting.omschrijving(), nieuweVerrichting.kasticket(), nieuweVerrichting.verrichtingsType());
         kasboekRepository.findById(kasboekId)
                 .orElseThrow(() -> new KasboekNietGevondenException())
                 .voegVerrichtingToe(verrichting);
@@ -137,10 +129,10 @@ public class KasboekService {
 
     @Transactional
     void wijzigVerrichting(long kasboekId, NieuweVerrichting nieuweVerrichting) {
-        var omschrijving = maakNieuweOmschrijvingOfGeefBestaande(nieuweVerrichting);
+        maakNieuweOmschrijvingIndienNogNietBestaand(nieuweVerrichting);
         kasboekRepository.findById(kasboekId)
                 .orElseThrow(() -> new KasboekNietGevondenException())
-                .wijzigVerrichting(nieuweVerrichting, omschrijving);
+                .wijzigVerrichting(nieuweVerrichting);
     }
 
 

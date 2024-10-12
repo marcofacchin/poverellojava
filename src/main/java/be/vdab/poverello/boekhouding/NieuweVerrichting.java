@@ -10,7 +10,6 @@ public record NieuweVerrichting(
         @PositiveOrZero int volgnummer,
         @Positive int dag,
         @NotNull BigDecimal bedrag,
-        @PositiveOrZero long omschrijvingId,
         @Positive long afdelingId,
         @NotBlank String omschrijving,
         Boolean kasticket,

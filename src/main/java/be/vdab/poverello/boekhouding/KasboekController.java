@@ -19,7 +19,6 @@ public class KasboekController {
             int volgnummer,
             int dag,
             BigDecimal bedrag,
-            long omschrijvingId,
             String omschrijving,
             Boolean kasticket,
             VerrichtingsType verrichtingsType
@@ -29,8 +28,7 @@ public class KasboekController {
                     verrichting.getVolgnummer(),
                     verrichting.getDag(),
                     verrichting.getBedrag(),
-                    verrichting.getOmschrijving().getId(),
-                    verrichting.getOmschrijving().getInhoud(),
+                    verrichting.getOmschrijving(),
                     verrichting.getKasticket(),
                     verrichting.getVerrichtingsType()
             );

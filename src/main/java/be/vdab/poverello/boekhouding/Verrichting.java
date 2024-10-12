@@ -9,16 +9,12 @@ public class Verrichting {
     private int volgnummer;
     private int dag;
     private BigDecimal bedrag;
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "omschrijvingId")
-    private Omschrijving omschrijving;
+    private String omschrijving;
     private Boolean kasticket;
     @Enumerated(EnumType.STRING)
     private VerrichtingsType verrichtingsType;
-/*    @Version
-    private long versie;*/
 
-    public Verrichting(int volgnummer, int dag, BigDecimal bedrag, Omschrijving omschrijving, Boolean kasticket, VerrichtingsType verrichtingsType) {
+    public Verrichting(int volgnummer, int dag, BigDecimal bedrag, String omschrijving, Boolean kasticket, VerrichtingsType verrichtingsType) {
         this.volgnummer = volgnummer;
         this.dag = dag;
         this.bedrag = bedrag;
@@ -42,7 +38,7 @@ public class Verrichting {
         return bedrag;
     }
 
-    public Omschrijving getOmschrijving() {
+    public String getOmschrijving() {
         return omschrijving;
     }
 
@@ -53,12 +49,6 @@ public class Verrichting {
     public VerrichtingsType getVerrichtingsType() {
         return verrichtingsType;
     }
-
-
-
-/*    public long getVersie() {
-        return versie;
-    }*/
 
     @Override
     public boolean equals(Object object) {

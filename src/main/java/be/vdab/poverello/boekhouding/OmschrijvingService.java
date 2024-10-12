@@ -18,8 +18,16 @@ public class OmschrijvingService {
         return omschrijvingRepository.findAllByAfdelingIdOrderByInhoud(afdelingId);
     }
 
+    List<Omschrijving> findAllByAfdelingIdAndAfdelingId1OrderByInhoud(long afdelingId) {
+        return omschrijvingRepository.findAllByAfdelingIdAndAfdelingId1OrderByInhoud(afdelingId);
+    }
+
     Optional<Omschrijving> findById(long id) {
         return omschrijvingRepository.findById(id);
+    }
+
+    Optional<Omschrijving> findByAfdelingIdAndInhoud(long afdelingId, String inhoud) {
+        return omschrijvingRepository.findByAfdelingIdAndInhoud(afdelingId, inhoud);
     }
 
     void deleteById(long id) {
@@ -32,6 +40,7 @@ public class OmschrijvingService {
     }
 
     Boolean existsByAfdelingIdAndInhoud(long afdelingId, String inhoud) {
-        return omschrijvingRepository.existsByAfdelingIdAndInhoud(afdelingId, inhoud);
+        return omschrijvingRepository.existsByAfdelingIdAndInhoud(1, inhoud)
+                || omschrijvingRepository.existsByAfdelingIdAndInhoud(afdelingId, inhoud);
     }
 }

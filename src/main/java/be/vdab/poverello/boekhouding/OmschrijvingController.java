@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.stream.Stream;
 
 @RestController
@@ -15,16 +16,21 @@ public class OmschrijvingController {
         this.omschrijvingService = omschrijvingService;
     }
 
-    private record OmschrijvingBeknopt(long id, String inhoud) {
+/*    private record OmschrijvingBeknopt(long id, long afdelingId, String inhoud) {
         OmschrijvingBeknopt(Omschrijving omschrijving) {
-            this(omschrijving.getId(), omschrijving.getInhoud());
+            this(omschrijving.getId(), omschrijving.getAfdelingId(), omschrijving.getInhoud());
         }
+    }*/
+
+    @GetMapping("{afdelingId}/only")
+    List<Omschrijving> findAllByAfdelingId(@PathVariable long afdelingId) {
+        return omschrijvingService.findAllByAfdelingIdOrderByInhoud(afdelingId);
+                //.stream().map(omschrijving -> new OmschrijvingBeknopt(omschrijving));
     }
 
     @GetMapping("{afdelingId}")
-    Stream<OmschrijvingBeknopt> findAllByAfdelingId(@PathVariable long afdelingId) {
-        return omschrijvingService.findAllByAfdelingIdOrderByInhoud(afdelingId)
-                .stream().map(omschrijving -> new OmschrijvingBeknopt(omschrijving));
+    List<Omschrijving> findAllByAfdelingIdAndAfdelingId1(@PathVariable long afdelingId) {
+        return omschrijvingService.findAllByAfdelingIdAndAfdelingId1OrderByInhoud(afdelingId);
     }
 
     @DeleteMapping("{id}")
@@ -37,7 +43,7 @@ public class OmschrijvingController {
     }
 
     @PostMapping("{afdelingId}/exists")
-    Boolean existsByAfdelingId(@PathVariable long afdelingId,
+    Boolean existsByAfdelingIdAndInhoud(@PathVariable long afdelingId,
                                @RequestBody @NotNull String inhoud) {
         return omschrijvingService.existsByAfdelingIdAndInhoud(afdelingId, inhoud);
     }
