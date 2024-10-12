@@ -1,9 +1,8 @@
 package be.vdab.poverello.boekhouding;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.stream.Stream;
 
 @RestController
@@ -25,6 +24,15 @@ public class OmschrijvingController {
     Stream<OmschrijvingBeknopt> findAllByAfdelingId(@PathVariable long afdelingId) {
         return omschrijvingService.findAllByAfdelingIdOrderByInhoud(afdelingId)
                 .stream().map(omschrijving -> new OmschrijvingBeknopt(omschrijving));
+    }
+
+    @DeleteMapping("{id}")
+    void deleteById(@PathVariable long id) {
+        try {
+            omschrijvingService.deleteById(id);
+        } catch (EmptyResultDataAccessException ignored) {
+            throw new OmschrijvingNietGevondenException();
+        }
     }
 
 

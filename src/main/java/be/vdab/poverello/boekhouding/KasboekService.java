@@ -21,7 +21,7 @@ public class KasboekService {
     private Omschrijving maakNieuweOmschrijvingOfGeefBestaande(NieuweVerrichting nieuweVerrichting) {
         Omschrijving omschrijving = new Omschrijving();
         if (nieuweVerrichting.omschrijvingId() > 0) {
-            omschrijving = omschrijvingService.findByAfdelingIdAndId(nieuweVerrichting.afdelingId(), nieuweVerrichting.omschrijvingId())
+            omschrijving = omschrijvingService.findById(nieuweVerrichting.omschrijvingId())
                     .orElseThrow(() -> new OmschrijvingNietGevondenException());
         } else {
             omschrijving = new Omschrijving(nieuweVerrichting.afdelingId(), nieuweVerrichting.omschrijving());

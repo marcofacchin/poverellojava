@@ -18,12 +18,12 @@ public class OmschrijvingService {
         return omschrijvingRepository.findAllByAfdelingIdOrderByInhoud(afdelingId);
     }
 
-    Optional<Omschrijving> findByAfdelingIdAndId(long afdelingId, long id) {
-        return omschrijvingRepository.findByAfdelingIdAndId(afdelingId, id);
+    Optional<Omschrijving> findById(long id) {
+        return omschrijvingRepository.findById(id);
     }
 
-    void deleteByAfdelingIdAndId(long afdelingId, long id) {
-        omschrijvingRepository.deleteByAfdelingIdAndId(afdelingId, id);
+    void deleteById(long id) {
+        omschrijvingRepository.deleteById(id);
     }
 
     long save(Omschrijving omschrijving) {
