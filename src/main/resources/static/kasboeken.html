@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="nl">
+<head>
+    <title>Poverello Kasboeken</title>
+    <script src="js/kasboeken.js" type="module" defer></script>
+    <link rel="stylesheet" href="css/kasboeken.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="container">
+    <header class="header">
+<!--        <img src="images/logo_prularia_wit.png" alt="Prularia logo">-->
+        <h1>Poverello - Kasboeken</h1>
+    </header>
+    <div class="input-container">
+        <div class="input-wrapper">
+            <div class="invoerData" align-input-left>
+                <div class="label-input">
+                    <label>Afdeling</label>
+                    <select name="afdeling" id="afdeling-select" disabled>
+                        <option value="">--Kies afdeling--</option>
+                    </select>
+                </div>
+                <div class="label-input">
+                    <label>Jaar</label>
+                    <select name="jaar" id="jaar-select" disabled>
+                        <option value="">--Kies jaar--</option>
+                    </select>
+                </div>
+                <div class="label-input">
+                    <label>Maand</label>
+                    <select name="maand" id="maand-select" disabled>
+                        <option value="">--Kies maand--</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="kasboekInhoud">
+        <h2><span id="maand"></span> <span id="jaar"></span> - <span id="afdeling"></span></h2>
+        <!--  De table is hidden wanneer er nog geen gegevens zijn ingegeven. -->
+        <div id="table-wrapper" class="table-wrapper" >
+            <table>
+                <thead>
+                <tr>
+                    <th>Volgnummer</th>
+                    <th>Dag</th>
+                    <th>Omschrijving</th>
+                    <th>Bedrag</th>
+                    <th>Ticket</th>
+                    <th>Type</th>
+                </tr>
+                </thead>
+                <tbody id="kasboekBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div id="storing" class="fout" hidden>Storing, contacteer helpdesk.</div>
+</div>
+</body>
+</html>

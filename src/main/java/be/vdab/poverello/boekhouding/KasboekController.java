@@ -15,6 +15,12 @@ import java.util.stream.Stream;
 public class KasboekController {
     private final KasboekService kasboekService;
     private final OmschrijvingService omschrijvingService;
+
+    public KasboekController(KasboekService kasboekService, OmschrijvingService omschrijvingService) {
+        this.kasboekService = kasboekService;
+        this.omschrijvingService = omschrijvingService;
+    }
+
     private record VerrichtingItem(
             int volgnummer,
             int dag,
@@ -60,11 +66,6 @@ public class KasboekController {
                     kasboek.getBerekendeWaarden()
             );
         }
-    }
-
-    public KasboekController(KasboekService kasboekService, OmschrijvingService omschrijvingService) {
-        this.kasboekService = kasboekService;
-        this.omschrijvingService = omschrijvingService;
     }
 
     @GetMapping("aantal")

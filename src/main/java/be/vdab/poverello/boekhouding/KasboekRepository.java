@@ -19,6 +19,8 @@ public interface KasboekRepository extends JpaRepository<Kasboek, Long> {
             """)
     Optional<Kasboek> findKasboekByAfdelingJaarMaandMetDetails(long afdelingId, int jaar, int maand);
 
+
+    // DEZE MOET BIJ AFDELINGREPOSITORY !!!
     @Query("""
             select a from Afdeling a
             where a.id=:afdelingId
