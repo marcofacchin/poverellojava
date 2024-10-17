@@ -8,6 +8,7 @@ import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.stream.Stream;
 
 @RestController
@@ -71,6 +72,16 @@ public class KasboekController {
     @GetMapping("aantal")
     long findAantal() {
         return kasboekService.findAantal();
+    }
+
+    @GetMapping("{afdelingId}/jaren")
+    List<Integer> findJaren(@PathVariable long afdelingId) {
+        return kasboekService.findJarenVanKasboekenAfdelingId(afdelingId);
+    }
+
+    @GetMapping("{afdelingId}/{jaar}/maanden")
+    List<Integer> findMaanden(@PathVariable long afdelingId, @PathVariable int jaar) {
+        return kasboekService.findMaandenVanKasboekenAfdelingIdEnJaar(afdelingId, jaar);
     }
 
     @GetMapping("{id}")

@@ -14,7 +14,7 @@
     </header>
     <div class="input-container">
         <div class="input-wrapper">
-            <div class="invoerData" align-input-left>
+            <div class="invoerData align-input-left">
                 <div class="label-input">
                     <label>Afdeling</label>
                     <select name="afdeling" id="afdeling-select" disabled>
@@ -37,10 +37,10 @@
         </div>
     </div>
     <div class="kasboekInhoud">
-        <h2><span id="maand"></span> <span id="jaar"></span> - <span id="afdeling"></span></h2>
         <!--  De table is hidden wanneer er nog geen gegevens zijn ingegeven. -->
-        <div id="table-wrapper" class="table-wrapper" >
-            <table>
+        <div id="table-wrapper" class="table-wrapper" hidden>
+            <h2><span id="maand"></span> <span id="jaar"></span> - <span id="afdeling"></span></h2>
+            <table id="kasboekTable">
                 <thead>
                 <tr>
                     <th>Volgnummer</th>
