@@ -28,7 +28,7 @@ export function autocomplete(inp, arr) {
     let currentFocus;
     /*execute a function when someone writes in the text field:*/
     inp.addEventListener("input", function(e) {
-        let a, b, i, val = this.value;
+        let a, a0, b, c, i, val = this.value;
         /*close any already open lists of autocompleted values*/
         closeAllLists();
         if (!val) { return false;}
@@ -40,13 +40,16 @@ export function autocomplete(inp, arr) {
         /*append the DIV element as a child of the autocomplete container:*/
         this.parentNode.appendChild(a);
         /*for each item in the array...*/
-        for (let i = 0; i < arr.length; i++) {
+        for (i = 0; i < arr.length; i++) {
             /*check if the item starts with the same letters as the text field value:*/
             /*if (arr[i].substr(0, val.length).toUpperCase() === val.toUpperCase()) {*/
             /*check if the item contains the same letters as the text field value:*/
             if (arr[i].toUpperCase().includes(val.toUpperCase())) {
+                a0 = document.createElement("DIV");
+                a0.setAttribute("class", "autocomplete-items-container");
                 /*create a DIV element for each matching element:*/
                 b = document.createElement("DIV");
+                b.setAttribute("class", "inhoud");
                 /*make the matching letters bold:*/
                 /*b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
                 b.innerHTML += arr[i].substr(val.length);*/
@@ -61,14 +64,24 @@ export function autocomplete(inp, arr) {
                     (or any other open lists of autocompleted values:*/
                     closeAllLists();
                 });
-                a.appendChild(b);
+                c = document.createElement("DIV");
+                c.setAttribute("class", "verwijderen");
+                c.innerHTML = "X";
+                c.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+                c.addEventListener("click", function(e) {
+                    inp.value = this.getElementsByTagName("input")[0].value + " DELETED";
+                    closeAllLists();
+                });
+                a0.appendChild(b);
+                a0.appendChild(c);
+                a.appendChild(a0);
             }
         }
     });
     /*execute a function presses a key on the keyboard:*/
     inp.addEventListener("keydown", function(e) {
         let x = document.getElementById(this.id + "autocomplete-list");
-        if (x) x = x.getElementsByTagName("div");
+        if (x) x = x.getElementsByClassName("inhoud");
         if (e.keyCode === 40) {
             /*If the arrow DOWN key is pressed,
             increase the currentFocus variable:*/
