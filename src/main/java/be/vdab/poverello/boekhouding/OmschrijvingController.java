@@ -16,7 +16,7 @@ public class OmschrijvingController {
         this.omschrijvingService = omschrijvingService;
     }
 
-/*    private record OmschrijvingBeknopt(long id, long afdelingId, String inhoud) {
+    /*private record OmschrijvingBeknopt(long id, long afdelingId, String inhoud) {
         OmschrijvingBeknopt(Omschrijving omschrijving) {
             this(omschrijving.getId(), omschrijving.getAfdelingId(), omschrijving.getInhoud());
         }
@@ -29,8 +29,9 @@ public class OmschrijvingController {
     }
 
     @GetMapping("{afdelingId}")
-    List<Omschrijving> findAllByAfdelingIdAndAfdelingId1(@PathVariable long afdelingId) {
-        return omschrijvingService.findAllByAfdelingIdAndAfdelingId1OrderByInhoud(afdelingId);
+    Stream<String> findAllByAfdelingIdAndAfdelingId1(@PathVariable long afdelingId) {
+        return omschrijvingService.findAllByAfdelingIdAndAfdelingId1OrderByInhoud(afdelingId)
+                .stream().map(omschrijving -> omschrijving.getInhoud());
     }
 
     @DeleteMapping("{id}")

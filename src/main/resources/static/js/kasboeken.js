@@ -1,12 +1,13 @@
 "use strict"
 
-import {byId, toon, verberg} from "./util.js";
+import {byId, toon, verberg, autocomplete} from "./util.js";
 
 const tableWrapper = byId("table-wrapper");
 const tableElement = byId("kasboekTable");
 const afdelingSelect = byId("afdeling-select");
 const jaarSelect = byId("jaar-select");
 const maandSelect = byId("maand-select");
+const omschrijvingInput = byId("omschrijving-input");
 
 function initSelect(element, text0) {
     if (element.options.length > 1) {
@@ -81,9 +82,9 @@ async function maakKasboekBody(afdelingId, jaar, maand) {
     const response = await fetch(`kasboeken/${afdelingId}/${jaar}/${maand}`);
     if (response.ok) {
         const kasboek = await response.json();
-        byId("afdeling").innerText = kasboek.afdelingId;
+        /*byId("afdeling").innerText = kasboek.afdelingId;
         byId("jaar").innerText = kasboek.jaar;
-        byId("maand").innerText = kasboek.maand;
+        byId("maand").innerText = kasboek.maand;*/
         initTable();
         for (const verrichting of kasboek.verrichtingen) {
             const tr = byId("kasboekBody").insertRow();
@@ -107,6 +108,17 @@ async function maakKasboekBody(afdelingId, jaar, maand) {
             tr.appendChild(typeTd);
         }
         byId("table-wrapper").hidden = false;
+        getOmschrijvingen(afdelingSelect.value);
+    } else {
+        toon("storing");
+    }
+}
+
+async function getOmschrijvingen(afdelingId) {
+    const response = await fetch(`omschrijvingen/${afdelingId}`);
+    if (response.ok) {
+        const omschrijvingenArray =  await response.json();
+        autocomplete(omschrijvingInput, omschrijvingenArray);
     } else {
         toon("storing");
     }
@@ -139,3 +151,5 @@ maandSelect.addEventListener('input', () => {
 });
 
 maakAfdelingSelect();
+
+
