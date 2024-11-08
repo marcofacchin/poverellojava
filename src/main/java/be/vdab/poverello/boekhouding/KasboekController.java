@@ -206,11 +206,12 @@ public class KasboekController {
         kasboekService.verwijderVerrichting(kasboekId, volgnummer);
     }
 
-    @PatchMapping("{kasboekId}/verrichtingen")
-    void wijzigVerrichting(@PathVariable long kasboekId,
+    // aanpassen : geef OUDE volgnummer mee als pathvariabele
+    @PatchMapping("{kasboekId}/verrichtingen/{volgnummer}")
+    void wijzigVerrichting(@PathVariable long kasboekId, @PathVariable int volgnummer,
                            @RequestBody @Valid  NieuweVerrichting nieuweVerrichting) {
         try {
-            kasboekService.wijzigVerrichting(kasboekId, nieuweVerrichting);
+            kasboekService.wijzigVerrichting(kasboekId, volgnummer, nieuweVerrichting);
         } catch (ObjectOptimisticLockingFailureException ex) {
             throw new KasboekWerdGewijzigdException();
         }

@@ -200,8 +200,8 @@ public class Kasboek {
         verrichtingen.remove(verrichting);
     }
 
-    public void wijzigVerrichting(NieuweVerrichting nieuweVerrichting) {
-        var oudeVerrichting = verrichtingen.stream().filter(element -> element.getVolgnummer() == nieuweVerrichting.volgnummer())
+    public void wijzigVerrichting(int volgnummer, NieuweVerrichting nieuweVerrichting) {
+        var oudeVerrichting = verrichtingen.stream().filter(element -> element.getVolgnummer() == volgnummer)
                 .findFirst()
                 .orElseThrow(() -> new VerrichtingNietGevondenException());
         verrichtingen.remove(oudeVerrichting);

@@ -139,11 +139,11 @@ public class KasboekService {
     }
 
     @Transactional
-    void wijzigVerrichting(long kasboekId, NieuweVerrichting nieuweVerrichting) {
+    void wijzigVerrichting(long kasboekId, int volgnummer, NieuweVerrichting nieuweVerrichting) {
         maakNieuweOmschrijvingIndienNogNietBestaand(nieuweVerrichting);
         kasboekRepository.findById(kasboekId)
                 .orElseThrow(() -> new KasboekNietGevondenException())
-                .wijzigVerrichting(nieuweVerrichting);
+                .wijzigVerrichting(volgnummer, nieuweVerrichting);
     }
 
 
