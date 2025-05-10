@@ -132,7 +132,7 @@ public class KasboekService {
         maakNieuweOmschrijvingIndienNogNietBestaand(nieuweVerrichting);
         kasboekRepository.findById(kasboekId)
                 .orElseThrow(() -> new KasboekNietGevondenException())
-                .wijzigVerrichting(nieuweVerrichting);
+                .wijzigVerrichting(nieuweVerrichting.volgnummer(), nieuweVerrichting);
     }
 
 
