@@ -2,6 +2,8 @@ package be.vdab.poverello.boekhouding;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
 import java.util.Optional;
 
 public interface KasboekRepository extends JpaRepository<Kasboek, Long> {
@@ -20,9 +22,16 @@ public interface KasboekRepository extends JpaRepository<Kasboek, Long> {
     Optional<Kasboek> findKasboekByAfdelingJaarMaandMetDetails(long afdelingId, int jaar, int maand);
 
     @Query("""
-            select a from Afdeling a
-            where a.id=:afdelingId
+            select distinct k.jaar from Kasboek k
+            where k.afdelingId = :afdelingId
             """)
-    Optional<Afdeling> findAfdelingByAfdelingId(long afdelingId);
+    List<Integer> findJarenVanKasboekenAfdelingId(long afdelingId);
+
+    @Query("""
+            select k.maand from Kasboek k
+            where k.afdelingId = :afdelingId
+            and k.jaar = :jaar
+            """)
+    List<Integer> findMaandenVanKasboekenAfdelingIdEnJaar(long afdelingId, long jaar);
 
 }
