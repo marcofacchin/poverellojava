@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Stream;
 
+@CrossOrigin
 @RestController
 @RequestMapping("omschrijvingen")
 public class OmschrijvingController {
@@ -16,9 +17,9 @@ public class OmschrijvingController {
         this.omschrijvingService = omschrijvingService;
     }
 
-/*    private record OmschrijvingBeknopt(long id, long afdelingId, String inhoud) {
+    private record OmschrijvingBeknopt(long id, String inhoud) {
         OmschrijvingBeknopt(Omschrijving omschrijving) {
-            this(omschrijving.getId(), omschrijving.getAfdelingId(), omschrijving.getInhoud());
+            this(omschrijving.getId(), omschrijving.getInhoud());
         }
     }*/
 
@@ -29,8 +30,15 @@ public class OmschrijvingController {
     }
 
     @GetMapping("{afdelingId}")
-    List<Omschrijving> findAllByAfdelingIdAndAfdelingId1(@PathVariable long afdelingId) {
-        return omschrijvingService.findAllByAfdelingIdAndAfdelingId1OrderByInhoud(afdelingId);
+    Stream<OmschrijvingBeknopt> findAllByAfdelingIdAndAfdelingId1(@PathVariable long afdelingId) {
+        return omschrijvingService.findAllByAfdelingIdAndAfdelingId1OrderByInhoud(afdelingId)
+                .stream().map(omschrijving -> new OmschrijvingBeknopt(omschrijving));
+    }
+
+    @GetMapping("{afdelingId}/inhoudonly")
+    Stream<String> findAllInhoudByAfdelingIdAndAfdelingId1(@PathVariable long afdelingId) {
+        return omschrijvingService.findAllByAfdelingIdAndAfdelingId1OrderByInhoud(afdelingId)
+                .stream().map(omschrijving -> omschrijving.getInhoud());
     }
 
     @DeleteMapping("{id}")

@@ -19,4 +19,9 @@ public interface OmschrijvingRepository extends JpaRepository<Omschrijving, Long
     Boolean existsByAfdelingIdAndInhoud(long afdelingId, String inhoud);
 
     Optional<Omschrijving> findByAfdelingIdAndInhoud(long afdelingId, String inhoud);
+
+/*    @Query("""
+            delete Omschrijving o where o.id = :id
+            """)
+    void deleteById(long id);*/
 }
