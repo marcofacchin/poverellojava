@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.util.stream.Stream;
 
+@CrossOrigin
 @RestController
 @RequestMapping("kasboeken")
 public class KasboekController {
