@@ -21,7 +21,7 @@ public class OmschrijvingController {
         OmschrijvingBeknopt(Omschrijving omschrijving) {
             this(omschrijving.getId(), omschrijving.getInhoud());
         }
-    }*/
+    }
 
     @GetMapping("{afdelingId}/only")
     List<Omschrijving> findAllByAfdelingId(@PathVariable long afdelingId) {
