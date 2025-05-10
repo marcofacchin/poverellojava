@@ -201,7 +201,6 @@ public class Kasboek {
     }
 
     public void wijzigVerrichting(int volgnummer, NieuweVerrichting nieuweVerrichting) {
-        //check eerst of er al een verrichting bestaat met NIEUWE volgnummer !!
         var oudeVerrichting = verrichtingen.stream().filter(element -> element.getVolgnummer() == volgnummer)
                 .findFirst()
                 .orElseThrow(() -> new VerrichtingNietGevondenException());

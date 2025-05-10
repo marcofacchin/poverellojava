@@ -8,6 +8,7 @@ import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.stream.Stream;
 
 @CrossOrigin
@@ -16,6 +17,12 @@ import java.util.stream.Stream;
 public class KasboekController {
     private final KasboekService kasboekService;
     private final OmschrijvingService omschrijvingService;
+
+    public KasboekController(KasboekService kasboekService, OmschrijvingService omschrijvingService) {
+        this.kasboekService = kasboekService;
+        this.omschrijvingService = omschrijvingService;
+    }
+
     private record VerrichtingItem(
             int volgnummer,
             int dag,
@@ -63,14 +70,19 @@ public class KasboekController {
         }
     }
 
-    public KasboekController(KasboekService kasboekService, OmschrijvingService omschrijvingService) {
-        this.kasboekService = kasboekService;
-        this.omschrijvingService = omschrijvingService;
-    }
-
     @GetMapping("aantal")
     long findAantal() {
         return kasboekService.findAantal();
+    }
+
+    @GetMapping("{afdelingId}/jaren")
+    List<Integer> findJaren(@PathVariable long afdelingId) {
+        return kasboekService.findJarenVanKasboekenAfdelingId(afdelingId);
+    }
+
+    @GetMapping("{afdelingId}/{jaar}/maanden")
+    List<Integer> findMaanden(@PathVariable long afdelingId, @PathVariable int jaar) {
+        return kasboekService.findMaandenVanKasboekenAfdelingIdEnJaar(afdelingId, jaar);
     }
 
     @GetMapping("{id}")
@@ -87,6 +99,16 @@ public class KasboekController {
             @PathVariable int maand) {
         return kasboekService.findKasboekByAfdelingIdJaarMaandMetDetails(afdelingId, jaar, maand)
                 .map(kasboek -> new KasboekBeknopt(kasboek))
+                .orElseThrow(() -> new KasboekNietGevondenException());
+    }
+
+    @GetMapping("{afdelingId}/{jaar}/{maand}/verrichtingen")
+    Stream<VerrichtingItem> findKasboekByIdMetAlleenVerrichtingen(
+            @PathVariable long afdelingId,
+            @PathVariable int jaar,
+            @PathVariable int maand) {
+        return kasboekService.findKasboekByAfdelingIdJaarMaandMetDetails(afdelingId, jaar, maand)
+                .map(kasboek -> kasboek.getVerrichtingen().stream().map(verrichting -> new VerrichtingItem(verrichting)))
                 .orElseThrow(() -> new KasboekNietGevondenException());
     }
 
@@ -184,11 +206,12 @@ public class KasboekController {
         kasboekService.verwijderVerrichting(kasboekId, volgnummer);
     }
 
-    @PatchMapping("{kasboekId}/verrichtingen")
-    void wijzigVerrichting(@PathVariable long kasboekId,
+    // aanpassen : geef OUDE volgnummer mee als pathvariabele
+    @PatchMapping("{kasboekId}/verrichtingen/{volgnummer}")
+    void wijzigVerrichting(@PathVariable long kasboekId, @PathVariable int volgnummer,
                            @RequestBody @Valid  NieuweVerrichting nieuweVerrichting) {
         try {
-            kasboekService.wijzigVerrichting(kasboekId, nieuweVerrichting);
+            kasboekService.wijzigVerrichting(kasboekId, volgnummer, nieuweVerrichting);
         } catch (ObjectOptimisticLockingFailureException ex) {
             throw new KasboekWerdGewijzigdException();
         }
