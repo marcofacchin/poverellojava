@@ -11,16 +11,16 @@ public class Verrichting {
     private BigDecimal bedrag;
     private String omschrijving;
     private Boolean kasticket;
-    @Enumerated(EnumType.STRING)
-    private VerrichtingsType verrichtingsType;
+    //@Enumerated(EnumType.STRING)
+    //private VerrichtingsType verrichtingsType;
 
-    public Verrichting(int volgnummer, int dag, BigDecimal bedrag, String omschrijving, Boolean kasticket, VerrichtingsType verrichtingsType) {
+    public Verrichting(int volgnummer, int dag, BigDecimal bedrag, String omschrijving, Boolean kasticket) {
         this.volgnummer = volgnummer;
         this.dag = dag;
         this.bedrag = bedrag;
         this.omschrijving = omschrijving;
         this.kasticket = kasticket;
-        this.verrichtingsType = verrichtingsType;
+        //this.verrichtingsType = verrichtingsType;
     }
 
     public Verrichting() {
@@ -46,9 +46,9 @@ public class Verrichting {
         return kasticket;
     }
 
-    public VerrichtingsType getVerrichtingsType() {
-        return verrichtingsType;
-    }
+//    public VerrichtingsType getVerrichtingsType() {
+//        return verrichtingsType;
+//    }
 
     @Override
     public boolean equals(Object object) {
