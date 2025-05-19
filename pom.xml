@@ -7,7 +7,7 @@
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.3.4</version>
     </parent>
-    <groupId>be.vdab.poverello</groupId>
+    <groupId>be.poverello</groupId>
     <artifactId>poverello</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>poverello</name>
