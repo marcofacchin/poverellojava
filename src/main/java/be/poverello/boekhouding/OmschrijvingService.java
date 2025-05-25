@@ -30,6 +30,7 @@ public class OmschrijvingService {
         return omschrijvingRepository.findByAfdelingIdAndInhoud(afdelingId, inhoud);
     }
 
+    @Transactional
     void deleteById(long id) {
         omschrijvingRepository.deleteById(id);
     }
