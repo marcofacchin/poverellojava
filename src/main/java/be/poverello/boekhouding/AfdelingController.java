@@ -1,9 +1,6 @@
 package be.poverello.boekhouding;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.stream.Stream;
 
@@ -23,8 +20,9 @@ public class AfdelingController {
         }
     }
 
-    @GetMapping()
-    Stream<AfdelingBeknopt> findAfdelingen() {
-        return afdelingService.findAfdelingen(Taal.NL).stream().map(afdeling -> new AfdelingBeknopt(afdeling));
+    @GetMapping("{taal}")
+    Stream<AfdelingBeknopt> findAfdelingen(@PathVariable Taal taal) {
+        //return afdelingService.findAfdelingen(be.poverello.boekhouding.Taal.NL).stream().map(afdeling -> new AfdelingBeknopt(afdeling));
+        return afdelingService.findAfdelingen(taal).stream().map(afdeling -> new AfdelingBeknopt(afdeling));
     }
 }

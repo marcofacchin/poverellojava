@@ -13,17 +13,12 @@ public interface AfdelingRepository extends JpaRepository<Afdeling, Long> {
             """)
     Optional<Afdeling> findAfdelingByAfdelingId(long afdelingId);
 
-/*    @Query("""
+    @Query("""
             select a from Afdeling a
             where a.taal = :taal
             and not (a.id = 1)
             """)
-    List<Afdeling> findAfdelingen(Taal taal);*/
+    List<Afdeling> findAfdelingenByTaal(Taal taal);
 
-    @Query("""
-            select a from Afdeling a
-            where a.taal = 'NL'
-            """)
-    List<Afdeling> findAfdelingen(Taal taal);
 
 }

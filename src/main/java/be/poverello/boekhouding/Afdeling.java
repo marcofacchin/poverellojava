@@ -1,6 +1,8 @@
 package be.poverello.boekhouding;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcType;
+import org.hibernate.dialect.PostgreSQLEnumJdbcType;
 
 @Entity
 @Table(name = "afdelingen")
@@ -9,6 +11,7 @@ public class Afdeling {
     private long id;
     private String naam;
     @Enumerated(EnumType.STRING)
+    @JdbcType(PostgreSQLEnumJdbcType.class)
     private Taal taal;
 
     public long getId() {

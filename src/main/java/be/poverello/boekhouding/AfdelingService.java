@@ -15,6 +15,6 @@ public class AfdelingService {
     }
 
     List<Afdeling> findAfdelingen(Taal taal) {
-        return afdelingRepository.findAfdelingen(taal);
+        return afdelingRepository.findAfdelingenByTaal(taal);
     }
 }
