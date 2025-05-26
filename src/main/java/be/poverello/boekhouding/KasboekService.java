@@ -57,7 +57,7 @@ public class KasboekService {
     long create(NieuwKasboek nieuwKasboek) {
         try {
             var kasboek = new Kasboek(nieuwKasboek.afdelingId(), nieuwKasboek.jaar(), nieuwKasboek.maand(), nieuwKasboek.beginSaldo());
-            var verrichting = new Verrichting(0, 1, kasboek.getBeginSaldo(), "SALDO", false);
+            var verrichting = new Verrichting(0, 1, kasboek.getBeginSaldo(), "SALDO", false, VerrichtingsType.BLANCO);
             kasboek.voegVerrichtingToe(verrichting);
             kasboekRepository.save(kasboek);
             return kasboek.getId();
@@ -121,7 +121,7 @@ public class KasboekService {
     void voegVerrichtingToe(long kasboekId, NieuweVerrichting nieuweVerrichting) {
         checkVolgnummerVerrichting(kasboekId, nieuweVerrichting.volgnummer());
         maakNieuweOmschrijvingIndienNogNietBestaand(nieuweVerrichting);
-        var verrichting = new Verrichting(nieuweVerrichting.volgnummer(), nieuweVerrichting.dag(), nieuweVerrichting.bedrag(), nieuweVerrichting.omschrijving(), nieuweVerrichting.kasticket());
+        var verrichting = new Verrichting(nieuweVerrichting.volgnummer(), nieuweVerrichting.dag(), nieuweVerrichting.bedrag(), nieuweVerrichting.omschrijving(), nieuweVerrichting.kasticket(), VerrichtingsType.valueOf(nieuweVerrichting.verrichtingsType()));
         kasboekRepository.findById(kasboekId)
                 .orElseThrow(() -> new KasboekNietGevondenException())
                 .voegVerrichtingToe(verrichting);

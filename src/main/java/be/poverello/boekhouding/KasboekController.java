@@ -28,7 +28,8 @@ public class KasboekController {
             int dag,
             BigDecimal bedrag,
             String omschrijving,
-            Boolean kasticket
+            Boolean kasticket,
+            VerrichtingsType verrichtingsType
     ) {
         public VerrichtingItem(Verrichting verrichting) {
             this(
@@ -36,7 +37,8 @@ public class KasboekController {
                     verrichting.getDag(),
                     verrichting.getBedrag(),
                     verrichting.getOmschrijving(),
-                    verrichting.getKasticket()
+                    verrichting.getKasticket(),
+                    verrichting.getVerrichtingsType()
             );
         }
     }

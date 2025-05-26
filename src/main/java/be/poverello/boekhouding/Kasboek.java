@@ -204,7 +204,7 @@ public class Kasboek {
                 .findFirst()
                 .orElseThrow(() -> new VerrichtingNietGevondenException());
         verrichtingen.remove(oudeVerrichting);
-        var verrichting = new Verrichting(nieuweVerrichting.volgnummer(), nieuweVerrichting.dag(), nieuweVerrichting.bedrag(), nieuweVerrichting.omschrijving(), nieuweVerrichting.kasticket());
+        var verrichting = new Verrichting(nieuweVerrichting.volgnummer(), nieuweVerrichting.dag(), nieuweVerrichting.bedrag(), nieuweVerrichting.omschrijving(), nieuweVerrichting.kasticket(), VerrichtingsType.valueOf(nieuweVerrichting.verrichtingsType()));
         verrichtingen.add(verrichting);
     }
 }

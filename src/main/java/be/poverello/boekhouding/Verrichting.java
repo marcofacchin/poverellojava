@@ -1,6 +1,9 @@
 package be.poverello.boekhouding;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcType;
+import org.hibernate.dialect.PostgreSQLEnumJdbcType;
+
 import java.math.BigDecimal;
 import java.util.Objects;
 
@@ -11,16 +14,17 @@ public class Verrichting {
     private BigDecimal bedrag;
     private String omschrijving;
     private Boolean kasticket;
-    //@Enumerated(EnumType.STRING)
-    //private VerrichtingsType verrichtingsType;
+    @Enumerated(EnumType.STRING)
+    @JdbcType(PostgreSQLEnumJdbcType.class)
+    private VerrichtingsType verrichtingsType;
 
-    public Verrichting(int volgnummer, int dag, BigDecimal bedrag, String omschrijving, Boolean kasticket) {
+    public Verrichting(int volgnummer, int dag, BigDecimal bedrag, String omschrijving, Boolean kasticket, VerrichtingsType verrichtingsType) {
         this.volgnummer = volgnummer;
         this.dag = dag;
         this.bedrag = bedrag;
         this.omschrijving = omschrijving;
         this.kasticket = kasticket;
-        //this.verrichtingsType = verrichtingsType;
+        this.verrichtingsType = verrichtingsType;
     }
 
     public Verrichting() {
@@ -46,9 +50,9 @@ public class Verrichting {
         return kasticket;
     }
 
-//    public VerrichtingsType getVerrichtingsType() {
-//        return verrichtingsType;
-//    }
+    public VerrichtingsType getVerrichtingsType() {
+        return verrichtingsType;
+    }
 
     @Override
     public boolean equals(Object object) {
