@@ -102,6 +102,16 @@ public class KasboekController {
                 .orElseThrow(() -> new KasboekNietGevondenException());
     }
 
+    @GetMapping("{afdelingId}/{jaar}/{maand}/kasboekid")
+    long findKasboekId(
+            @PathVariable long afdelingId,
+            @PathVariable int jaar,
+            @PathVariable int maand) {
+        return kasboekService.findKasboekByAfdelingIdJaarMaandMetDetails(afdelingId, jaar, maand)
+                .map(kasboek -> kasboek.getId())
+                .orElseThrow(() -> new KasboekNietGevondenException());
+    }
+
     @GetMapping("{afdelingId}/{jaar}/{maand}/verrichtingen")
     Stream<VerrichtingItem> findKasboekByIdMetAlleenVerrichtingen(
             @PathVariable long afdelingId,
@@ -109,6 +119,13 @@ public class KasboekController {
             @PathVariable int maand) {
         return kasboekService.findKasboekByAfdelingIdJaarMaandMetDetails(afdelingId, jaar, maand)
                 .map(kasboek -> kasboek.getVerrichtingen().stream().map(verrichting -> new VerrichtingItem(verrichting)))
+                .orElseThrow(() -> new KasboekNietGevondenException());
+    }
+
+    @GetMapping("{kasboekId}/cash")
+    CashMetGewichten getCash(@PathVariable long kasboekId) {
+        return kasboekService.findKasboekByIdMetDetails(kasboekId)
+                .map(kasboek -> kasboek.getCash())
                 .orElseThrow(() -> new KasboekNietGevondenException());
     }
 
