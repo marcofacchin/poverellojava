@@ -19,7 +19,6 @@ public class Kasboek {
     private long afdelingId;
     private int jaar;
     private int maand;
-    private int totaalBedragBiljetten;
     @Column(name = "totaalGewichtMunten2E", precision = 4, scale = 2)
     private BigDecimal totaalGewichtMunten2E = BigDecimal.ZERO;
     @Column(name = "totaalGewichtMunten1E", precision = 4, scale = 2)
@@ -70,10 +69,6 @@ public class Kasboek {
         return maand;
     }
 
-    public int getTotaalBedragBiljetten() {
-        return totaalBedragBiljetten;
-    }
-
     public BigDecimal getTotaalGewichtMunten2E() {
         return totaalGewichtMunten2E;
     }
@@ -107,12 +102,12 @@ public class Kasboek {
         return versie;
     }
 
-    public CashMetGewichten getCash() {
-        return new CashMetGewichten(this);
-    }
-
     public BigDecimal getBeginSaldo() {
         return beginSaldo;
+    }
+
+    public CashMetGewichten getCash() {
+        return new CashMetGewichten(this);
     }
 
     public CashInEuro getCashInEuro() {
@@ -137,7 +132,6 @@ public class Kasboek {
                 .add(totaalGewichtMuntenBruinE);
         int totaalGewichtMuntenInKilo = totaalGewichtMunten.divide(BigDecimal.valueOf(1000), 0, RoundingMode.HALF_UP).intValue();
         return new CashInEuro(
-            totaalBedragBiljetten,
             totaalBedragMunten2E,
             totaalBedragMunten1E,
             totaalBedragMunten50cE,
@@ -180,13 +174,36 @@ public class Kasboek {
     }
 
     public void setCash(CashMetGewichten cashMetGewichten) {
-        this.totaalBedragBiljetten = cashMetGewichten.totaalBedragBiljetten();
         this.totaalGewichtMunten2E = cashMetGewichten.totaalGewichtMunten2E();
         this.totaalGewichtMunten1E = cashMetGewichten.totaalGewichtMunten1E();
         this.totaalGewichtMunten50cE = cashMetGewichten.totaalGewichtMunten50cE();
         this.totaalGewichtMunten20cE = cashMetGewichten.totaalGewichtMunten20cE();
         this.totaalGewichtMunten10cE = cashMetGewichten.totaalGewichtMunten10cE();
         this.totaalGewichtMuntenBruinE = cashMetGewichten.totaalGewichtMuntenBruinE();
+    }
+
+    public void setTotaalGewichtMunten2E(BigDecimal totaalGewichtMunten2E) {
+        this.totaalGewichtMunten2E = totaalGewichtMunten2E;
+    }
+
+    public void setTotaalGewichtMunten1E(BigDecimal totaalGewichtMunten1E) {
+        this.totaalGewichtMunten1E = totaalGewichtMunten1E;
+    }
+
+    public void setTotaalGewichtMunten50cE(BigDecimal totaalGewichtMunten50cE) {
+        this.totaalGewichtMunten50cE = totaalGewichtMunten50cE;
+    }
+
+    public void setTotaalGewichtMunten20cE(BigDecimal totaalGewichtMunten20cE) {
+        this.totaalGewichtMunten20cE = totaalGewichtMunten20cE;
+    }
+
+    public void setTotaalGewichtMunten10cE(BigDecimal totaalGewichtMunten10cE) {
+        this.totaalGewichtMunten10cE = totaalGewichtMunten10cE;
+    }
+
+    public void setTotaalGewichtMuntenBruinE(BigDecimal totaalGewichtMuntenBruinE) {
+        this.totaalGewichtMuntenBruinE = totaalGewichtMuntenBruinE;
     }
 
     public void voegVerrichtingToe(Verrichting verrichting) {

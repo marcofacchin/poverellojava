@@ -176,7 +176,7 @@ public class KasboekController {
     }
 
     @PatchMapping("{kasboekId}/beginSaldo")
-    void wijzigMaand(@PathVariable long kasboekId,
+    void wijzigBeginSaldo(@PathVariable long kasboekId,
                      @RequestBody @NotNull BigDecimal saldo) {
         try {
             kasboekService.wijzigBeginSaldo(kasboekId, saldo);

@@ -106,6 +106,48 @@ public class KasboekService {
                 .setCash(cashMetGewichten);
     }
 
+    @Transactional
+    void wijzigTotaalGewichtMunten2E(long kasboekId, BigDecimal totaalGewichtMunten2E) {
+        kasboekRepository.findById(kasboekId)
+                .orElseThrow(() -> new KasboekNietGevondenException())
+                .setTotaalGewichtMunten2E(totaalGewichtMunten2E);
+    }
+
+    @Transactional
+    void wijzigTotaalGewichtMunten1E(long kasboekId, BigDecimal totaalGewichtMunten1E) {
+        kasboekRepository.findById(kasboekId)
+                .orElseThrow(() -> new KasboekNietGevondenException())
+                .setTotaalGewichtMunten1E(totaalGewichtMunten1E);
+    }
+
+    @Transactional
+    void wijzigTotaalGewichtMunten50cE(long kasboekId, BigDecimal totaalGewichtMunten50cE) {
+        kasboekRepository.findById(kasboekId)
+                .orElseThrow(() -> new KasboekNietGevondenException())
+                .setTotaalGewichtMunten50cE(totaalGewichtMunten50cE);
+    }
+
+    @Transactional
+    void wijzigTotaalGewichtMunten20cE(long kasboekId, BigDecimal totaalGewichtMunten20cE) {
+        kasboekRepository.findById(kasboekId)
+                .orElseThrow(() -> new KasboekNietGevondenException())
+                .setTotaalGewichtMunten20cE(totaalGewichtMunten20cE);
+    }
+
+    @Transactional
+    void wijzigTotaalGewichtMunten10cE(long kasboekId, BigDecimal totaalGewichtMunten10cE) {
+        kasboekRepository.findById(kasboekId)
+                .orElseThrow(() -> new KasboekNietGevondenException())
+                .setTotaalGewichtMunten10cE(totaalGewichtMunten10cE);
+    }
+
+    @Transactional
+    void wijzigTotaalGewichtMuntenBruinE(long kasboekId, BigDecimal totaalGewichtMuntenBruinE) {
+        kasboekRepository.findById(kasboekId)
+                .orElseThrow(() -> new KasboekNietGevondenException())
+                .setTotaalGewichtMuntenBruinE(totaalGewichtMuntenBruinE);
+    }
+
     private void checkVolgnummerVerrichting(long kasboekId, int volgnummer) {
         var kasboek = kasboekRepository.findById(kasboekId)
                 .orElseThrow(() -> new KasboekNietGevondenException());

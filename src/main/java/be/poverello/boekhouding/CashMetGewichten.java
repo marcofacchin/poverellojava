@@ -6,7 +6,6 @@ import jakarta.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
 
 public record CashMetGewichten(
-        @PositiveOrZero int totaalBedragBiljetten,
         @NotNull BigDecimal totaalGewichtMunten2E,
         @NotNull BigDecimal totaalGewichtMunten1E,
         @NotNull BigDecimal totaalGewichtMunten50cE,
@@ -16,7 +15,6 @@ public record CashMetGewichten(
 ) {
     CashMetGewichten(Kasboek kasboek) {
         this(
-        kasboek.getTotaalBedragBiljetten(),
         kasboek.getTotaalGewichtMunten2E(),
         kasboek.getTotaalGewichtMunten1E(),
         kasboek.getTotaalGewichtMunten50cE(),
