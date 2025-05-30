@@ -195,6 +195,66 @@ public class KasboekController {
         }
     }
 
+    @PatchMapping("{kasboekId}/totaalGewichtMunten2E")
+    void wijzigCash2E(@PathVariable long kasboekId,
+                    @RequestBody @NotNull BigDecimal totaalGewichtMunten2E) {
+        try {
+            kasboekService.wijzigTotaalGewichtMunten2E(kasboekId, totaalGewichtMunten2E);
+        } catch (ObjectOptimisticLockingFailureException ex) {
+            throw new KasboekWerdGewijzigdException();
+        }
+    }
+
+    @PatchMapping("{kasboekId}/totaalGewichtMunten1E")
+    void wijzigCash1E(@PathVariable long kasboekId,
+                    @RequestBody @NotNull BigDecimal totaalGewichtMunten1E) {
+        try {
+            kasboekService.wijzigTotaalGewichtMunten1E(kasboekId, totaalGewichtMunten1E);
+        } catch (ObjectOptimisticLockingFailureException ex) {
+            throw new KasboekWerdGewijzigdException();
+        }
+    }
+
+    @PatchMapping("{kasboekId}/totaalGewichtMunten50cE")
+    void wijzigCash50cE(@PathVariable long kasboekId,
+                    @RequestBody @NotNull BigDecimal totaalGewichtMunten50cE) {
+        try {
+            kasboekService.wijzigTotaalGewichtMunten2E(kasboekId, totaalGewichtMunten50cE);
+        } catch (ObjectOptimisticLockingFailureException ex) {
+            throw new KasboekWerdGewijzigdException();
+        }
+    }
+
+    @PatchMapping("{kasboekId}/totaalGewichtMunten20cE")
+    void wijzigCash20cE(@PathVariable long kasboekId,
+                    @RequestBody @NotNull BigDecimal totaalGewichtMunten20cE) {
+        try {
+            kasboekService.wijzigTotaalGewichtMunten2E(kasboekId, totaalGewichtMunten20cE);
+        } catch (ObjectOptimisticLockingFailureException ex) {
+            throw new KasboekWerdGewijzigdException();
+        }
+    }
+
+    @PatchMapping("{kasboekId}/totaalGewichtMunten10cE")
+    void wijzigCash10cE(@PathVariable long kasboekId,
+                    @RequestBody @NotNull BigDecimal totaalGewichtMunten10cE) {
+        try {
+            kasboekService.wijzigTotaalGewichtMunten10cE(kasboekId, totaalGewichtMunten10cE);
+        } catch (ObjectOptimisticLockingFailureException ex) {
+            throw new KasboekWerdGewijzigdException();
+        }
+    }
+
+    @PatchMapping("{kasboekId}/totaalGewichtMuntenBruinE")
+    void wijzigCashBruinE(@PathVariable long kasboekId,
+                    @RequestBody @NotNull BigDecimal totaalGewichtMuntenBruinE) {
+        try {
+            kasboekService.wijzigTotaalGewichtMuntenBruinE(kasboekId, totaalGewichtMuntenBruinE);
+        } catch (ObjectOptimisticLockingFailureException ex) {
+            throw new KasboekWerdGewijzigdException();
+        }
+    }
+
     @PostMapping("{kasboekId}/verrichtingen")
     void voegVerrichtingToe(@PathVariable long kasboekId,
                             @RequestBody @Valid  NieuweVerrichting nieuweVerrichting) {
