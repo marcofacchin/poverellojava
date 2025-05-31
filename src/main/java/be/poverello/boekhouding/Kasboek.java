@@ -186,20 +186,23 @@ public class Kasboek {
         switch (muntId) {
             case 0:
                 this.totaalGewichtMunten2E = gewicht;
+                break;
             case 1:
                 this.totaalGewichtMunten1E = gewicht;
+                break;
             case 2:
                 this.totaalGewichtMunten50cE = gewicht;
+                break;
             case 3:
                 this.totaalGewichtMunten20cE = gewicht;
+                break;
             case 4:
                 this.totaalGewichtMunten10cE = gewicht;
+                break;
             case 5:
                 this.totaalGewichtMuntenBruinE = gewicht;
+                break;
         }
-
-
-        this.totaalGewichtMunten2E = totaalGewichtMunten2E;
     }
 
 
