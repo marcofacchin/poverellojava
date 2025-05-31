@@ -112,12 +112,10 @@ public class KasboekController {
                 .orElseThrow(() -> new KasboekNietGevondenException());
     }
 
-    @GetMapping("{afdelingId}/{jaar}/{maand}/verrichtingen")
+    @GetMapping("{kasboekId}/verrichtingen")
     Stream<VerrichtingItem> findKasboekByIdMetAlleenVerrichtingen(
-            @PathVariable long afdelingId,
-            @PathVariable int jaar,
-            @PathVariable int maand) {
-        return kasboekService.findKasboekByAfdelingIdJaarMaandMetDetails(afdelingId, jaar, maand)
+            @PathVariable long kasboekId) {
+        return kasboekService.findKasboekByIdMetDetails(kasboekId)
                 .map(kasboek -> kasboek.getVerrichtingen().stream().map(verrichting -> new VerrichtingItem(verrichting)))
                 .orElseThrow(() -> new KasboekNietGevondenException());
     }

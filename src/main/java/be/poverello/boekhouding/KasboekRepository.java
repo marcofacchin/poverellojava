@@ -24,6 +24,7 @@ public interface KasboekRepository extends JpaRepository<Kasboek, Long> {
     @Query("""
             select distinct k.jaar from Kasboek k
             where k.afdelingId = :afdelingId
+            order by k.jaar desc
             """)
     List<Integer> findJarenVanKasboekenAfdelingId(long afdelingId);
 
@@ -31,6 +32,7 @@ public interface KasboekRepository extends JpaRepository<Kasboek, Long> {
             select k.maand from Kasboek k
             where k.afdelingId = :afdelingId
             and k.jaar = :jaar
+            order by k.maand desc
             """)
     List<Integer> findMaandenVanKasboekenAfdelingIdEnJaar(long afdelingId, long jaar);
 
