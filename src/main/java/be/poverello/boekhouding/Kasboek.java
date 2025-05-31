@@ -182,29 +182,26 @@ public class Kasboek {
         this.totaalGewichtMuntenBruinE = cashMetGewichten.totaalGewichtMuntenBruinE();
     }
 
-    public void setTotaalGewichtMunten2E(BigDecimal totaalGewichtMunten2E) {
+    public void setTotaalGewichtMunt(int muntId, BigDecimal gewicht) {
+        switch (muntId) {
+            case 0:
+                this.totaalGewichtMunten2E = gewicht;
+            case 1:
+                this.totaalGewichtMunten1E = gewicht;
+            case 2:
+                this.totaalGewichtMunten50cE = gewicht;
+            case 3:
+                this.totaalGewichtMunten20cE = gewicht;
+            case 4:
+                this.totaalGewichtMunten10cE = gewicht;
+            case 5:
+                this.totaalGewichtMuntenBruinE = gewicht;
+        }
+
+
         this.totaalGewichtMunten2E = totaalGewichtMunten2E;
     }
 
-    public void setTotaalGewichtMunten1E(BigDecimal totaalGewichtMunten1E) {
-        this.totaalGewichtMunten1E = totaalGewichtMunten1E;
-    }
-
-    public void setTotaalGewichtMunten50cE(BigDecimal totaalGewichtMunten50cE) {
-        this.totaalGewichtMunten50cE = totaalGewichtMunten50cE;
-    }
-
-    public void setTotaalGewichtMunten20cE(BigDecimal totaalGewichtMunten20cE) {
-        this.totaalGewichtMunten20cE = totaalGewichtMunten20cE;
-    }
-
-    public void setTotaalGewichtMunten10cE(BigDecimal totaalGewichtMunten10cE) {
-        this.totaalGewichtMunten10cE = totaalGewichtMunten10cE;
-    }
-
-    public void setTotaalGewichtMuntenBruinE(BigDecimal totaalGewichtMuntenBruinE) {
-        this.totaalGewichtMuntenBruinE = totaalGewichtMuntenBruinE;
-    }
 
     public void voegVerrichtingToe(Verrichting verrichting) {
         if (! verrichtingen.add(verrichting)) {
