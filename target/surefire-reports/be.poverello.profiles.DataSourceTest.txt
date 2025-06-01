@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: be.poverello.profiles.DataSourceTest
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.632 s -- in be.poverello.profiles.DataSourceTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.367 s -- in be.poverello.profiles.DataSourceTest
